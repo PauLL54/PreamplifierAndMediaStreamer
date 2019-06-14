@@ -16,6 +16,7 @@ private:
     void handlePulsingDown();
     void startPulsingUp();
     void startPulsingDown();
+    void setTimeoutPulse();
 
 private:
     int m_targetValue;

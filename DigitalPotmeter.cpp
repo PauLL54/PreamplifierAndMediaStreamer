@@ -9,7 +9,7 @@ const int MaxSteps = 31;
 
 DigitalPotmeter::DigitalPotmeter() :
     m_targetValue(0),
-    m_actualValue(MaxSteps),
+    m_actualValue(MaxSteps + 1),
     m_state(Idle),
     m_pulseTimeOut(0)
 {
@@ -73,16 +73,21 @@ void DigitalPotmeter::updateDevice()
 
 void DigitalPotmeter::startPulsingUp()
 {
-    m_pulseTimeOut = millis() + MaxDebounceTime;
+    setTimeoutPulse();
     m_state = PulsingUp;
     digitalWrite(PinUp, LOW);
 }
 
 void DigitalPotmeter::startPulsingDown()
 {
-    m_pulseTimeOut = millis() + MaxDebounceTime;
+    setTimeoutPulse();
     m_state = PulsingDown;
     digitalWrite(PinDown, LOW);
+}
+
+void DigitalPotmeter::setTimeoutPulse()
+{
+    m_pulseTimeOut = millis() + MaxDebounceTime;
 }
 
 void DigitalPotmeter::handlePulsingUp()
