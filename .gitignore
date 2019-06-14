@@ -6,3 +6,4 @@
 *.tlog
 *.pdb
 *.idb
+*.ipch
