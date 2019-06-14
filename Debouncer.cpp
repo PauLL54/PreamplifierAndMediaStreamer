@@ -10,7 +10,7 @@ Debouncer::Debouncer(int bounceMaxCount) :
 
 void Debouncer::updateInputState(int inputValue)
 {
-    if (inputValue == HIGH)
+    if (inputValue == 1)
         handleValueHigh();
     else
         handleValueLow();
