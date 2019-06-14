@@ -6,7 +6,7 @@ class NeoPixelRing {
 public:
 	NeoPixelRing();
 
-private:
+	void set5bitsValue(int _5bitsValue);
 
 private:
 	Adafruit_NeoPixel m_LedRing;

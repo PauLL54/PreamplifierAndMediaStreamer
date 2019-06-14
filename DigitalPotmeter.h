@@ -1,5 +1,6 @@
 //  Copyright © 2019 Paul Langemeijer. All rights reserved.
 #pragma once
+#include "NeoPixelRing.h"
 
 class DigitalPotmeter {
 public:
@@ -25,4 +26,6 @@ private:
     enum State { Idle, PulsingUp, PulsingDown };
     State m_state;
     unsigned long m_pulseTimeOut;
+
+    NeoPixelRing m_neoPixelRing;
 };

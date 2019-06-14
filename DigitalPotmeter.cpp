@@ -11,7 +11,8 @@ DigitalPotmeter::DigitalPotmeter() :
     m_targetValue(0),
     m_actualValue(MaxSteps + 1),
     m_state(Idle),
-    m_pulseTimeOut(0)
+    m_pulseTimeOut(0),
+    m_neoPixelRing()
 {
    	pinMode(PinUp, OUTPUT);
 	pinMode(PinDown, OUTPUT);
@@ -99,6 +100,8 @@ void DigitalPotmeter::handlePulsingUp()
         m_actualValue++;
         if (m_actualValue > MaxSteps)
             m_actualValue = MaxSteps;
+        
+        m_neoPixelRing.set5bitsValue(m_actualValue);
     }
 }
 
@@ -111,6 +114,8 @@ void DigitalPotmeter::handlePulsingDown()
         m_actualValue--;
         if (m_actualValue < 0)
             m_actualValue = 0;
+        
+        m_neoPixelRing.set5bitsValue(m_actualValue);
     }
 }
 
