@@ -18,7 +18,7 @@ void setup()
 void handleInitialization()
 {
     m_digitalPotmeter.updateDevice();
-    if (m_digitalPotmeter.targetValueReached())
+    if (m_digitalPotmeter.isInitialized())
     {
       m_initializing = false;
       m_digitalPotmeter.setTargetValue(10);

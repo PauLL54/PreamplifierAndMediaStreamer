@@ -5,11 +5,11 @@ class DigitalPotmeter {
 public:
 	DigitalPotmeter();
 
+    bool isInitialized() const;
     void setTargetValue(int targetValue);
-    bool targetValueReached() const;
-    void updateDevice();
     void up();
     void down();
+    void updateDevice();
 
 private:
     void handlePulsingUp();

@@ -2,8 +2,8 @@
 #include "DigitalPotmeter.h"
 #include "Arduino.h"
 
-const int PinUp = 10;
-const int PinDown = 10;
+const int PinUp = 7;   // PD7
+const int PinDown = 8; // PB0
 const int MaxDebounceTime = 60; // ms
 const int MaxSteps = 31;
 
@@ -20,6 +20,16 @@ DigitalPotmeter::DigitalPotmeter() :
     digitalWrite(PinDown, HIGH);
 }
 
+bool DigitalPotmeter::isInitialized() const
+{
+    return (m_actualValue == 0);
+}
+
+void DigitalPotmeter::setTargetValue(int targetValue)
+{
+    m_targetValue = targetValue;
+}
+
 void DigitalPotmeter::up()
 {
     m_targetValue++;
@@ -32,16 +42,6 @@ void DigitalPotmeter::down()
     m_targetValue--;
     if (m_targetValue < 0)
         m_targetValue = 0;
-}
-
-void DigitalPotmeter::setTargetValue(int targetValue)
-{
-    m_targetValue = targetValue;
-}
-
-bool DigitalPotmeter::targetValueReached() const
-{
-    return (m_actualValue == m_targetValue);
 }
 
 void DigitalPotmeter::updateDevice()
