@@ -7,8 +7,8 @@ public:
 
     void updateInputState(int inputValue);
     bool inputChanged() const;
-    bool inputSwitchedOn() const;
-    bool inputSwitchedOff() const;
+    bool inputBecameHigh() const;
+    bool inputBecameLow() const;
 
 private:
     void handleValueHigh();
@@ -18,7 +18,7 @@ private:
     int m_bounceMaxCount;
     int m_bounceCounter;
 
-    enum InputState { Off, GoingOn, SwitchedOn, On, GoingOff, SwitchedOff };
+    enum InputState { IsLow, GoingHigh, BecameHigh, IsHigh, GoingLow, BecameLow };
    
     InputState m_inputState;
 };

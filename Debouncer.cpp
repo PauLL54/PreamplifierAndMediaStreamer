@@ -4,7 +4,7 @@
 Debouncer::Debouncer(int bounceMaxCount) :
     m_bounceMaxCount(bounceMaxCount),
     m_bounceCounter(0),
-    m_inputState(Off)
+    m_inputState(IsLow)
 {
 }
 
@@ -18,44 +18,44 @@ void Debouncer::updateInputState(int inputValue)
 
 bool Debouncer::inputChanged() const
 {
-    return (inputSwitchedOn() || inputSwitchedOff());
+    return (inputBecameHigh() || inputBecameLow());
 }
 
-bool Debouncer::inputSwitchedOn() const
+bool Debouncer::inputBecameHigh() const
 {
-    return (m_inputState == SwitchedOn);
+    return (m_inputState == BecameHigh);
 }
 
-bool Debouncer::inputSwitchedOff() const
+bool Debouncer::inputBecameLow() const
 {
-    return (m_inputState == SwitchedOff);
+    return (m_inputState == BecameLow);
 }
 
 void Debouncer::handleValueHigh()
 {
-    if (m_inputState == SwitchedOn)
+    if (m_inputState == BecameHigh)
     {
-        m_inputState = On;
+        m_inputState = IsHigh;
     }
 
-    if (m_inputState == SwitchedOff)
+    if (m_inputState == BecameLow)
     {
-        m_inputState = Off;
+        m_inputState = IsLow;
     }
 
-    if ((m_inputState == Off) || (m_inputState == GoingOn))
+    if ((m_inputState == IsLow) || (m_inputState == GoingHigh))
     {
-        m_inputState = GoingOn;
+        m_inputState = GoingHigh;
         m_bounceCounter++;
     
         if (m_bounceCounter > m_bounceMaxCount)
         {
             m_bounceCounter = 0;
-            m_inputState = SwitchedOn;
+            m_inputState = BecameHigh;
         }
     }
 
-    if ((m_inputState == On) || (m_inputState == GoingOff))
+    if ((m_inputState == IsHigh) || (m_inputState == GoingLow))
     {
         // do nothing
     }
@@ -63,29 +63,29 @@ void Debouncer::handleValueHigh()
 
 void Debouncer::handleValueLow()
 {
-    if (m_inputState == SwitchedOn)
+    if (m_inputState == BecameHigh)
     {
-        m_inputState = On;
+        m_inputState = IsHigh;
     }
 
-    if (m_inputState == SwitchedOff)
+    if (m_inputState == BecameLow)
     {
-        m_inputState = Off;
+        m_inputState = IsLow;
     }
 
-    if ((m_inputState == On) || (m_inputState == GoingOff))
+    if ((m_inputState == IsHigh) || (m_inputState == GoingLow))
     {
-        m_inputState = GoingOff;
+        m_inputState = GoingLow;
         m_bounceCounter++;
     
         if (m_bounceCounter > m_bounceMaxCount)
         {
             m_bounceCounter = 0;
-            m_inputState = SwitchedOff;
+            m_inputState = BecameLow;
         }
     }
 
-    if ((m_inputState == Off) || (m_inputState == GoingOn))
+    if ((m_inputState == IsLow) || (m_inputState == GoingHigh))
     {
         // do nothing
     }

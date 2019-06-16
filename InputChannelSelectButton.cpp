@@ -17,7 +17,7 @@ void InputChannelSelectButton::checkButtonPressed()
     int valueButton = digitalRead(Button);
     m_debouncer.updateInputState(valueButton);
 
-    if (m_debouncer.inputSwitchedOff())
+    if (m_debouncer.inputBecameLow())
     {
         m_inputChannelSelector.selectNextChannel();
     }
