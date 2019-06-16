@@ -15,7 +15,7 @@ DigitalPotmeter::DigitalPotmeter() :
     m_neoPixelRing()
 {
    	pinMode(PinUp, OUTPUT);
-	pinMode(PinDown, OUTPUT);
+    pinMode(PinDown, OUTPUT);
 
     digitalWrite(PinUp, HIGH);
     digitalWrite(PinDown, HIGH);
@@ -118,4 +118,3 @@ void DigitalPotmeter::handlePulsingDown()
         m_neoPixelRing.set5bitsValue(m_actualValue);
     }
 }
-

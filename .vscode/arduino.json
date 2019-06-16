@@ -1,4 +1,6 @@
 {
-    "board": "arduino:avr:uno",
-    "sketch": "Preamplifier.ino"
+    "board": "arduino:avr:atmega328bb",
+    "sketch": "Preamplifier.ino",
+    "port": "COM9",
+    "programmer": "ArduinoISP"
 }

@@ -11,6 +11,7 @@ InputChannelSelector::InputChannelSelector()
 	pinMode(BIT0, OUTPUT);
 	pinMode(BIT1, OUTPUT);
 	pinMode(BIT2, OUTPUT);
+            Serial.println("InputChannelSelector"); 
 
 	selectChannel(0);
 }
@@ -32,6 +33,8 @@ void InputChannelSelector::selectNextChannel()
 
 void InputChannelSelector::switchToChannel(int channel)
 {
+Serial.print("switchToChannel: "); 
+Serial.println(channel);
 	int bit0 = channel & 1 ? HIGH : LOW;
 	int bit1 = channel & 2 ? HIGH : LOW;
 	int bit2 = channel & 4 ? HIGH : LOW;
@@ -39,4 +42,5 @@ void InputChannelSelector::switchToChannel(int channel)
 	digitalWrite(BIT1, bit1);
 	digitalWrite(BIT2, bit2);
 }
+
 

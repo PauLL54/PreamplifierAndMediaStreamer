@@ -1,23 +1,23 @@
 //  Copyright © 2019 Paul Langemeijer. All rights reserved.
 #include "NeoPixelRing.h"
 
-const int pinLedRing = 16; // PC2
+const int pinLedRing = 17; // PC3
 const int NumberOfLeds = 24;
 const int Max5Bits = 31;
 
 NeoPixelRing::NeoPixelRing() :
-    m_LedRing(pinLedRing, NumberOfLeds)
+    m_LedRing(NumberOfLeds, pinLedRing)
 {
-    m_LedRing.begin();
-    m_LedRing.setBrightness(255);
-    set5bitsValue(0);
 }
 
 void NeoPixelRing::set5bitsValue(int _5bitsValue)
 {
-    int ledValue = 0.5 + _5bitsValue * NumberOfLeds / Max5Bits; // normalize
+    m_LedRing.begin();
+    m_LedRing.setBrightness(50);
 
-    for (int i = 0; i < NumberOfLeds; i++) 
+    uint16_t ledValue = 0.5 + _5bitsValue * NumberOfLeds / Max5Bits; // normalize
+
+    for (uint16_t i = 0; i < NumberOfLeds; i++) 
     {  
         if (i >= ledValue)               
             m_LedRing.setPixelColor(i, 0, 0, 0);

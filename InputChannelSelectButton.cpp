@@ -9,7 +9,7 @@ InputChannelSelectButton::InputChannelSelectButton(InputChannelSelector& inputCh
     m_inputChannelSelector(inputChannelSelector),
     m_debouncer(BounceMaxCount)
 {
-    pinMode(Button, INPUT);
+    pinMode(Button, INPUT_PULLUP);
 }
 
 void InputChannelSelectButton::checkButtonPressed()
@@ -17,6 +17,8 @@ void InputChannelSelectButton::checkButtonPressed()
     int valueButton = digitalRead(Button);
     m_debouncer.updateInputState(valueButton);
 
-    if (m_debouncer.inputSwitchedOn())
+    if (m_debouncer.inputSwitchedOff())
+    {
         m_inputChannelSelector.selectNextChannel();
+    }
 }

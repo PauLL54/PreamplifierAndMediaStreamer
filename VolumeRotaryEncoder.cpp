@@ -2,16 +2,17 @@
 #include "VolumeRotaryEncoder.h"
 #include <Arduino.h>
 
-const int pinA = 19;  // PC5
-const int pinB = 18;  // PC4
+const int pinA = 18;  // PC4
+const int pinB = 19;  // PC5
 const int BounceMaxCount = 10;
 
-VolumeRotaryEncoder::VolumeRotaryEncoder() :
+VolumeRotaryEncoder::VolumeRotaryEncoder(DigitalPotmeter& digitalPotmeter) :
+    m_digitalPotmeter(digitalPotmeter),
     m_pinALast(0),
     m_debouncer(BounceMaxCount)
 {
-       pinMode (pinA, INPUT);
-       pinMode (pinB, INPUT);
+       pinMode (pinA, INPUT_PULLUP);
+       pinMode (pinB, INPUT_PULLUP);
 
        m_pinALast = digitalRead(pinA);
 }
@@ -29,12 +30,14 @@ void VolumeRotaryEncoder::checkRotation()
         if (digitalRead(pinB) != valuePinA) 
         {  
             // Means pin A Changed first - We're Rotating Clockwise        
-            //encoderPosCount ++;
+            Serial.println("inputChanged up"); 
+            m_digitalPotmeter.up();
         }
         else 
         {
-          // Otherwise B changed first and we're moving CCW        
-          //encoderPosCount--;      
+            // Otherwise B changed first and we're moving CCW        
+            Serial.println("inputChanged down"); 
+            m_digitalPotmeter.down();
         } 
         m_pinALast = valuePinA;
     }

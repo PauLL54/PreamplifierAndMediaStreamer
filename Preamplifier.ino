@@ -7,7 +7,7 @@
 InputChannelSelector m_inputChannelSelector;
 InputChannelSelectButton m_inputChannelSelectButton(m_inputChannelSelector);
 DigitalPotmeter m_digitalPotmeter;
-VolumeRotaryEncoder m_volumeRotaryEncoder;
+VolumeRotaryEncoder m_volumeRotaryEncoder(m_digitalPotmeter);
 bool m_initializing = true;
 
 void setup() 
