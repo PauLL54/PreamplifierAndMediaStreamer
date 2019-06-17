@@ -1,24 +1,24 @@
 //  Copyright © 2019 Paul Langemeijer. All rights reserved.
 #pragma once
 
-class Debouncer {
+class DebouncerWithCounter {
 public:
-	Debouncer(int time_ms);
+	DebouncerWithCounter(int bounceMaxCount);
 
     void updateInputState(int inputValue);
     bool inputChanged() const;
-    bool inputChangedToHigh() const;
-    bool inputChangedToLow() const;
+    bool inputBecameHigh() const;
+    bool inputBecameLow() const;
 
 private:
     void handleValueHigh();
     void handleValueLow();
 
 private:
-    unsigned long m_time_ms;
-    unsigned long m_timeout;
+    int m_bounceMaxCount;
+    int m_bounceCounter;
 
-    enum InputState { IsLow, StartBecomingHigh, BecomingHigh, IsHigh, StartBecomingLow, BecomingLow };
+    enum InputState { IsLow, GoingHigh, BecameHigh, IsHigh, GoingLow, BecameLow };
    
     InputState m_inputState;
 };

@@ -3,11 +3,11 @@
 #include "Arduino.h"
 
 const int Button = 15;	// PC1
-const int BounceMaxCount = 10;
+const int BounceTime_ms = 1;
 
 InputChannelSelectButton::InputChannelSelectButton(InputChannelSelector& inputChannelSelector) :
     m_inputChannelSelector(inputChannelSelector),
-    m_debouncer(BounceMaxCount)
+    m_debouncer(BounceTime_ms)
 {
     pinMode(Button, INPUT_PULLUP);
 }
@@ -17,7 +17,7 @@ void InputChannelSelectButton::checkButtonPressed()
     int valueButton = digitalRead(Button);
     m_debouncer.updateInputState(valueButton);
 
-    if (m_debouncer.inputBecameLow())
+    if (m_debouncer.inputChangedToLow())
     {
         m_inputChannelSelector.selectNextChannel();
     }

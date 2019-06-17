@@ -1,9 +1,10 @@
 //  Copyright © 2019 Paul Langemeijer. All rights reserved.
 #include "Debouncer.h"
+#include "Arduino.h"
 
-Debouncer::Debouncer(int bounceMaxCount) :
-    m_bounceMaxCount(bounceMaxCount),
-    m_bounceCounter(0),
+Debouncer::Debouncer(int time_ms) :
+    m_time_ms(time_ms),
+    m_timeout(0),
     m_inputState(IsLow)
 {
 }
@@ -18,75 +19,85 @@ void Debouncer::updateInputState(int inputValue)
 
 bool Debouncer::inputChanged() const
 {
-    return (inputBecameHigh() || inputBecameLow());
+    return (inputChangedToHigh() || inputChangedToHigh());
 }
 
-bool Debouncer::inputBecameHigh() const
+bool Debouncer::inputChangedToHigh() const
 {
-    return (m_inputState == BecameHigh);
+    return (m_inputState == StartBecomingHigh);
 }
 
-bool Debouncer::inputBecameLow() const
+bool Debouncer::inputChangedToLow() const
 {
-    return (m_inputState == BecameLow);
+    return (m_inputState == StartBecomingLow);
 }
 
 void Debouncer::handleValueHigh()
 {
-    if (m_inputState == BecameHigh)
+    if (m_inputState == StartBecomingHigh)
     {
-        m_inputState = IsHigh;
+        m_inputState = BecomingHigh;
     }
 
-    if (m_inputState == BecameLow)
+    if (m_inputState == IsLow)
     {
-        m_inputState = IsLow;
+        m_inputState = StartBecomingHigh;
+        m_timeout = millis() + m_time_ms;
     }
 
-    if ((m_inputState == IsLow) || (m_inputState == GoingHigh))
+    if (m_inputState == BecomingHigh)
     {
-        m_inputState = GoingHigh;
-        m_bounceCounter++;
-    
-        if (m_bounceCounter > m_bounceMaxCount)
+        if (millis() > m_timeout)
         {
-            m_bounceCounter = 0;
-            m_inputState = BecameHigh;
+            m_inputState = IsHigh;
         }
     }
 
-    if ((m_inputState == IsHigh) || (m_inputState == GoingLow))
+    if (m_inputState == IsHigh)
     {
-        // do nothing
+    }
+
+    if (m_inputState == BecomingLow)
+    {
+        if (millis() > m_timeout)
+        {
+            m_inputState = StartBecomingHigh;
+            m_timeout = millis() + m_time_ms;
+        }   
     }
 }
 
 void Debouncer::handleValueLow()
 {
-    if (m_inputState == BecameHigh)
+    if (m_inputState == StartBecomingLow)
     {
-        m_inputState = IsHigh;
+        m_inputState = BecomingLow;
     }
 
-    if (m_inputState == BecameLow)
+    if (m_inputState == IsHigh)
     {
-        m_inputState = IsLow;
+        m_inputState = StartBecomingLow;
+        m_timeout = millis() + m_time_ms;
     }
 
-    if ((m_inputState == IsHigh) || (m_inputState == GoingLow))
+    if (m_inputState == BecomingLow)
     {
-        m_inputState = GoingLow;
-        m_bounceCounter++;
-    
-        if (m_bounceCounter > m_bounceMaxCount)
+        if (millis() > m_timeout)
         {
-            m_bounceCounter = 0;
-            m_inputState = BecameLow;
+            m_inputState = IsLow;
         }
     }
 
-    if ((m_inputState == IsLow) || (m_inputState == GoingHigh))
+    if (m_inputState == IsLow)
     {
-        // do nothing
+    }
+
+    if (m_inputState == BecomingHigh)
+    {
+        if (millis() > m_timeout)
+        {
+            m_inputState = StartBecomingLow;
+            m_timeout = millis() + m_time_ms;
+        }
     }
 }

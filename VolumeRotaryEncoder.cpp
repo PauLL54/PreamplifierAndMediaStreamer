@@ -4,12 +4,12 @@
 
 const int pinA = 18;  // PC4
 const int pinB = 19;  // PC5
-const int BounceMaxCount = 10;
+const int BounceTime_ms = 1;
 
 VolumeRotaryEncoder::VolumeRotaryEncoder(DigitalPotmeter& digitalPotmeter) :
     m_digitalPotmeter(digitalPotmeter),
     m_pinALast(0),
-    m_debouncer(BounceMaxCount)
+    m_debouncer(BounceTime_ms)
 {
        pinMode (pinA, INPUT_PULLUP);
        pinMode (pinB, INPUT_PULLUP);
@@ -30,13 +30,11 @@ void VolumeRotaryEncoder::checkRotation()
         if (digitalRead(pinB) != valuePinA) 
         {  
             // Means pin A Changed first - We're Rotating Clockwise        
-            Serial.println("inputChanged up"); 
             m_digitalPotmeter.up();
         }
         else 
         {
             // Otherwise B changed first and we're moving CCW        
-            Serial.println("inputChanged down"); 
             m_digitalPotmeter.down();
         } 
         m_pinALast = valuePinA;
