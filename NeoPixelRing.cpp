@@ -29,7 +29,7 @@ void NeoPixelRing::set5bitsValue(int _5bitsValue)
     for (uint16_t i = 0; i < NumberOfLeds; i++) 
     {  
         if (i >= ledValue)               
-            m_LedRing.setPixelColor(i, 0, 0, 0);
+            m_LedRing.setPixelColor(i, 0, 255, 0);
         else 
             m_LedRing.setPixelColor(i, r, g, b);
     }
