@@ -17,17 +17,34 @@ void NeoPixelRing::set5bitsValue(int _5bitsValue)
 
     uint16_t ledValue = 0.5 + _5bitsValue * NumberOfLeds / Max5Bits; // normalize
 
+    uint8_t r = 255;
+    uint8_t g = 255;
+    uint8_t b = 155;
+
+    // if (ledValue > 16)
+    // {
+    //     g = 165; b = 0; //orange
+    // }
+
     for (uint16_t i = 0; i < NumberOfLeds; i++) 
     {  
         if (i >= ledValue)               
             m_LedRing.setPixelColor(i, 0, 0, 0);
-        else if (i >= 20)               
-            m_LedRing.setPixelColor(i, 255, 0, 0);      // red
-        else if (i >= 16)               
-            m_LedRing.setPixelColor(i, 255, 165, 0);    // orange
         else 
-            m_LedRing.setPixelColor(i, 255, 255, 255);  // white
+            m_LedRing.setPixelColor(i, r, g, b);
     }
+
+    // for (uint16_t i = 0; i < NumberOfLeds; i++) 
+    // {  
+    //     if (i >= ledValue)               
+    //         m_LedRing.setPixelColor(i, 0, 0, 0);
+    //     else if (i >= 20)               
+    //         m_LedRing.setPixelColor(i, 255, 0, 0);      // red
+    //     else if (i >= 16)               
+    //         m_LedRing.setPixelColor(i, 255, 165, 0);    // orange
+    //     else 
+    //         m_LedRing.setPixelColor(i, 255, 255, 255);  // white
+    // }
 
     m_LedRing.show();
 }
