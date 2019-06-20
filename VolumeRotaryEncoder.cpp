@@ -4,7 +4,7 @@
 
 const int pinA = 18;  // PC4
 const int pinB = 19;  // PC5
-const int BounceTime_ms = 2;
+const int BounceTime_ms = 1;
 
 VolumeRotaryEncoder::VolumeRotaryEncoder(DigitalPotmeter& digitalPotmeter) :
     m_digitalPotmeter(digitalPotmeter),

@@ -3,7 +3,7 @@
 #include "Arduino.h"
 
 const int Button = 15;	// PC1
-const int BounceTime_ms = 2;
+const int BounceTime_ms = 1;
 
 InputChannelSelectButton::InputChannelSelectButton(InputChannelSelector& inputChannelSelector) :
     m_inputChannelSelector(inputChannelSelector),

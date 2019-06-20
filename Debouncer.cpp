@@ -57,7 +57,7 @@ void Debouncer::handleValueHigh()
     {
     }
 
-    if (m_inputState == BecomingLow)
+    if ((m_inputState == StartBecomingLow) || (m_inputState == BecomingLow))
     {
         if (millis() > m_timeout)
         {
@@ -92,7 +92,7 @@ void Debouncer::handleValueLow()
     {
     }
 
-    if (m_inputState == BecomingHigh)
+    if ((m_inputState == StartBecomingHigh) || (m_inputState == BecomingHigh))
     {
         if (millis() > m_timeout)
         {
