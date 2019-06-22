@@ -13,7 +13,7 @@ InputChannelSelector::InputChannelSelector()
 	pinMode(BIT2, OUTPUT);
             Serial.println("InputChannelSelector"); 
 
-	selectChannel(0);
+	selectChannel(6); // music server
 }
 
 void InputChannelSelector::selectChannel(int channel)
