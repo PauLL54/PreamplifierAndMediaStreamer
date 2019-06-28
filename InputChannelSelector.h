@@ -8,6 +8,7 @@ public:
 
 	void selectChannel(int channel); // 0..7
 	void selectNextChannel();
+	void selectPreviousChannel();
 	
 private:
 	void switchToChannel(int channel);

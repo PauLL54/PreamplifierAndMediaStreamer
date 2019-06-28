@@ -31,6 +31,15 @@ void InputChannelSelector::selectNextChannel()
 	switchToChannel(m_currentChannel);
 }
 
+void InputChannelSelector::selectPreviousChannel()
+{
+	m_currentChannel--;
+	if (m_currentChannel < 0)
+		m_currentChannel = 7;
+
+	switchToChannel(m_currentChannel);
+}
+
 void InputChannelSelector::switchToChannel(int channel)
 {
 Serial.print("switchToChannel: "); 
