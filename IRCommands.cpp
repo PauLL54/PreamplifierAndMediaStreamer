@@ -1,13 +1,16 @@
 //  Copyright © 2019 Paul Langemeijer. All rights reserved.
 #include "IRCommands.h"
 
-const int pinIRReceiver = 2; // PD2 
+const int PinIRReceiver = 2; // PD2 
+const unsigned long StartRepeatTime = 300; // millis
 
 IRCommands::IRCommands(InputChannelSelector& inputChannelSelector, DigitalPotmeter& digitalPotmeter) :
     m_inputChannelSelector(inputChannelSelector),
     m_digitalPotmeter(digitalPotmeter),
-    m_IRReceiver(pinIRReceiver),
-    m_IRDecoder()
+    m_IRReceiver(PinIRReceiver),
+    m_IRDecoder(),
+    m_lastCommand(NoCommand),
+    m_lastTimeCommand(0)
 {
     initValueCommandPairs();
     m_IRReceiver.enableIRIn(); // Start the receiver
@@ -24,7 +27,16 @@ IRCommands::Command IRCommands::getCommand()
     if (m_IRReceiver.getResults()) 
     {
         m_IRDecoder.decode();
-        command = getCommand(m_IRDecoder.protocolNum, m_IRDecoder.value);
+        
+        uint32_t code = m_IRDecoder.value;
+        command = getCommand(m_IRDecoder.protocolNum, code);
+        
+        if (code != REPEAT_CODE) 
+        {
+            m_lastCommand = command;
+            m_lastTimeCommand = millis();
+        }
+        
         m_IRReceiver.enableIRIn();
     }
 
@@ -34,16 +46,16 @@ IRCommands::Command IRCommands::getCommand()
 IRCommands::Command IRCommands::getCommand(uint8_t protocol, uint32_t code)
 {
     IRCommands::Command command = NoCommand;
-    Serial.print(code, HEX);
-    Serial.print(" protocol: ");
-    Serial.println(protocol);
+    // Serial.print(code, HEX); Serial.print(" protocol: "); Serial.println(protocol);
 
     switch (protocol)
     {
         case UNKNOWN:
             break;
         case NEC:
-            if (code != REPEAT_CODE) 
+            if ( (code == REPEAT_CODE) && (millis() - m_lastTimeCommand > StartRepeatTime) )
+                command = m_lastCommand;
+            else
                 command = getCommand(m_NEC, code);
             break;
         case SONY:
@@ -64,9 +76,7 @@ IRCommands::Command IRCommands::getCommand(uint8_t protocol, uint32_t code)
 IRCommands::Command IRCommands::getCommand(CodeCommandPair (&pairs)[NumberOfCommands], uint32_t code)
 {
     IRCommands::Command command = NoCommand;
-    uint32_t size = sizeof(pairs) / sizeof(CodeCommandPair);
-    Serial.println(size);
-    for (uint32_t i = 0; i < size; ++i) 
+    for (uint32_t i = 0; i < sizeof(pairs) / sizeof(CodeCommandPair); ++i) 
     {
         if (pairs[i].code == code)
             return pairs[i].command;
@@ -129,12 +139,12 @@ void IRCommands::initValueCommandPairs()
     m_NEC[2]  = { 0xFF5AA5, ChannelUp };
     m_NEC[3]  = { 0xFF10EF, ChannelDown };
     m_NEC[4]  = { 0x000000, TV_On };
-    m_NEC[5]  = { 0xFFA25F, Channel1 };
+    m_NEC[5]  = { 0xFFA25D, Channel1 };
     m_NEC[6]  = { 0xFF629D, Channel2 };
     m_NEC[7]  = { 0xFFE21D, Channel3 };
     m_NEC[8]  = { 0xFF22DD, Channel4 };
     m_NEC[9]  = { 0xFF02FD, Channel5 };
-    m_NEC[10] = { 0xFFC2D3, Channel6 };
+    m_NEC[10] = { 0xFFC23D, Channel6 };
     m_NEC[11] = { 0xFFE01F, Channel7 };
     m_NEC[12] = { 0xFFA857, Channel8 };
 

@@ -11,7 +11,6 @@ InputChannelSelector::InputChannelSelector()
 	pinMode(BIT0, OUTPUT);
 	pinMode(BIT1, OUTPUT);
 	pinMode(BIT2, OUTPUT);
-            Serial.println("InputChannelSelector"); 
 
 	selectChannel(6); // music server
 }
@@ -42,14 +41,13 @@ void InputChannelSelector::selectPreviousChannel()
 
 void InputChannelSelector::switchToChannel(int channel)
 {
-Serial.print("switchToChannel: "); 
-Serial.println(channel);
 	int bit0 = channel & 1 ? HIGH : LOW;
 	int bit1 = channel & 2 ? HIGH : LOW;
 	int bit2 = channel & 4 ? HIGH : LOW;
 	digitalWrite(BIT0, bit0);
 	digitalWrite(BIT1, bit1);
 	digitalWrite(BIT2, bit2);
+	//Serial.print("switchToChannel: "); Serial.println(channel);
 }
 
 

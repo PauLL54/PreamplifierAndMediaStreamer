@@ -28,6 +28,8 @@ private:
 	DigitalPotmeter& m_digitalPotmeter;
 	IRrecvPCI m_IRReceiver;
 	IRdecode  m_IRDecoder;
+	Command   m_lastCommand;
+	unsigned long m_lastTimeCommand;
 
 	CodeCommandPair m_NEC[NumberOfCommands];
 	CodeCommandPair m_RC5[NumberOfCommands];
