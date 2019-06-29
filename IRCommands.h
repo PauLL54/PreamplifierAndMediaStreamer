@@ -30,7 +30,11 @@ private:
 	IRdecode  m_IRDecoder;
 	Command   m_lastCommand;
 	unsigned long m_lastTimeCommand;
+	unsigned long m_lastTimeSonyCommand;
+	bool m_checkTV;
+	bool m_TV_IsOn;
 
 	CodeCommandPair m_NEC[NumberOfCommands];
+	CodeCommandPair m_SONY[NumberOfCommands];
 	CodeCommandPair m_RC5[NumberOfCommands];
 };
