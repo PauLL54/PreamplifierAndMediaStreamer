@@ -21,13 +21,12 @@ void IRCommands::checkForCommands()
 IRCommands::Command IRCommands::getCommand()
 {
     IRCommands::Command command = NoCommand;
-
     if (m_IRReceiver.getResults()) 
     {
         m_IRDecoder.decode();
         command = getCommand(m_IRDecoder.protocolNum, m_IRDecoder.value);
+        m_IRReceiver.enableIRIn();
     }
-    m_IRReceiver.enableIRIn();
 
     return command;
 }
@@ -65,8 +64,9 @@ IRCommands::Command IRCommands::getCommand(uint8_t protocol, uint32_t code)
 IRCommands::Command IRCommands::getCommand(CodeCommandPair (&pairs)[NumberOfCommands], uint32_t code)
 {
     IRCommands::Command command = NoCommand;
-
-    for (uint32_t i = 0; i < sizeof(pairs) / sizeof(CodeCommandPair); ++i) 
+    uint32_t size = sizeof(pairs) / sizeof(CodeCommandPair);
+    Serial.println(size);
+    for (uint32_t i = 0; i < size; ++i) 
     {
         if (pairs[i].code == code)
             return pairs[i].command;
@@ -122,22 +122,21 @@ void IRCommands::handleCommand(Command command)
     }
 }
 
-
 void IRCommands::initValueCommandPairs()
 {
-    m_NEC[0]  = { 1234, VolumeUp };
-    m_NEC[1]  = { 1234, VolumeDown };
-    m_NEC[2]  = { 1234, ChannelUp };
-    m_NEC[3]  = { 1234, ChannelDown };
-    m_NEC[4]  = { 1234, TV_On };
-    m_NEC[5]  = { 1234, Channel1 };
-    m_NEC[6]  = { 1234, Channel2 };
-    m_NEC[7]  = { 1234, Channel3 };
-    m_NEC[8]  = { 1234, Channel4 };
-    m_NEC[9]  = { 1234, Channel5 };
-    m_NEC[10] = { 1234, Channel6 };
-    m_NEC[11] = { 1234, Channel7 };
-    m_NEC[12] = { 1234, Channel8 };
+    m_NEC[0]  = { 0xFF18E7, VolumeUp };
+    m_NEC[1]  = { 0xFF4AB5, VolumeDown };
+    m_NEC[2]  = { 0xFF5AA5, ChannelUp };
+    m_NEC[3]  = { 0xFF10EF, ChannelDown };
+    m_NEC[4]  = { 0x000000, TV_On };
+    m_NEC[5]  = { 0xFFA25F, Channel1 };
+    m_NEC[6]  = { 0xFF629D, Channel2 };
+    m_NEC[7]  = { 0xFFE21D, Channel3 };
+    m_NEC[8]  = { 0xFF22DD, Channel4 };
+    m_NEC[9]  = { 0xFF02FD, Channel5 };
+    m_NEC[10] = { 0xFFC2D3, Channel6 };
+    m_NEC[11] = { 0xFFE01F, Channel7 };
+    m_NEC[12] = { 0xFFA857, Channel8 };
 
     m_RC5[0]  = { 1234, VolumeUp };
     m_RC5[1]  = { 1234, VolumeDown };
