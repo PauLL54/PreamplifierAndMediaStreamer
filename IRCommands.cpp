@@ -1,7 +1,11 @@
 //  Copyright © 2019 Paul Langemeijer. All rights reserved.
 #include "IRCommands.h"
 
-const int PinIRReceiver = 2; // PD2 
+const int PinIRReceiver = 2;        // PD2 
+const int PinCheckTV = 13;          // PB5;
+const int PinCheckProtocol1 = 5;    // PD5;
+const int PinCheckProtocol2 = 6;    // PD6;
+
 const unsigned long StartRepeatTime = 300; // millis
 const unsigned long SonyTimeout = 100; // millis
 
@@ -14,14 +18,22 @@ IRCommands::IRCommands(InputChannelSelector& inputChannelSelector, DigitalPotmet
     m_lastTimeCommand(0),
     m_lastTimeSonyCommand(0),
     m_checkTV(false),
-    m_TV_IsOn(false)
+    m_TV_IsOn(false),
+    m_useNEC(false),
+    m_useSony(false),
+    m_useRC5(false)
 {
+    pinMode(PinCheckTV,        INPUT_PULLUP);
+    pinMode(PinCheckProtocol1, INPUT_PULLUP);
+    pinMode(PinCheckProtocol2, INPUT_PULLUP);
+
     initValueCommandPairs();
     m_IRReceiver.enableIRIn(); // Start the receiver
 }
 
 void IRCommands::checkForCommands()
 {
+    checkJumpers();
     handleCommand(getCommand());
 }
 
@@ -187,4 +199,41 @@ void IRCommands::initValueCommandPairs()
     m_RC5[10] = { 1234, Channel6 };
     m_RC5[12] = { 1234, Channel7 };
     m_RC5[12] = { 1234, Channel8 };
+}
+
+bool IRCommands::checkJumpers()
+{
+    m_checkTV = digitalRead(PinCheckTV);
+
+    int p1 = digitalRead(PinCheckProtocol1);
+    int p2 = digitalRead(PinCheckProtocol2);
+    int protocolSelect = p1 + (p2 << 1);
+    switch (protocolSelect)
+    {
+        case 0:
+            m_useNEC = false;
+            m_useSony = false;
+            m_useRC5 = false;
+            break;
+        case 1:
+            m_useNEC = true;
+            m_useSony = false;
+            m_useRC5 = false;
+            break;
+        case 2:
+            m_useNEC = false;
+            m_useSony = true;
+            m_useRC5 = false;
+            break;
+        case 3:
+            m_useNEC = false;
+            m_useSony = false;
+            m_useRC5 = true;
+            break;
+        default:
+            m_useNEC = false;
+            m_useSony = false;
+            m_useRC5 = false;
+            break;
+    }
 }

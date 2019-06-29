@@ -22,6 +22,7 @@ private:
 	Command getCommand(CodeCommandPair (&pairs)[NumberOfCommands], uint32_t code);
 	void handleCommand(Command command);
 	void initValueCommandPairs();
+	bool checkJumpers();
 
 private:
 	InputChannelSelector& m_inputChannelSelector;
@@ -33,6 +34,9 @@ private:
 	unsigned long m_lastTimeSonyCommand;
 	bool m_checkTV;
 	bool m_TV_IsOn;
+	bool m_useNEC;
+	bool m_useSony;
+	bool m_useRC5;
 
 	CodeCommandPair m_NEC[NumberOfCommands];
 	CodeCommandPair m_SONY[NumberOfCommands];
