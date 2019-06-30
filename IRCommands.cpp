@@ -27,7 +27,6 @@ IRCommands::IRCommands(InputChannelSelector& inputChannelSelector, DigitalPotmet
     pinMode(PinCheckProtocol1, INPUT_PULLUP);
     pinMode(PinCheckProtocol2, INPUT_PULLUP);
 
-    initValueCommandPairs();
     m_IRReceiver.enableIRIn(); // Start the receiver
 }
 
@@ -92,7 +91,7 @@ IRCommands::Command IRCommands::getCommand(uint8_t protocol, uint32_t code)
         default:
             break;
     }
-    Serial.print(code, HEX); Serial.print(" protocol: "); Serial.println(protocol);
+    //Serial.print(code, HEX); Serial.print(" protocol: "); Serial.println(protocol);
     return command;
 }
 
@@ -156,52 +155,7 @@ void IRCommands::handleCommand(Command command)
     }
 }
 
-void IRCommands::initValueCommandPairs()
-{
-    m_NEC[0]  = { 0xFF18E7, VolumeUp };
-    m_NEC[1]  = { 0xFF4AB5, VolumeDown };
-    m_NEC[2]  = { 0xFF5AA5, ChannelUp };
-    m_NEC[3]  = { 0xFF10EF, ChannelDown };
-    m_NEC[4]  = { 0x000000, TV_On };
-    m_NEC[5]  = { 0xFFA25D, Channel1 };
-    m_NEC[6]  = { 0xFF629D, Channel2 };
-    m_NEC[7]  = { 0xFFE21D, Channel3 };
-    m_NEC[8]  = { 0xFF22DD, Channel4 };
-    m_NEC[9]  = { 0xFF02FD, Channel5 };
-    m_NEC[10] = { 0xFFC23D, Channel6 };
-    m_NEC[11] = { 0xFFE01F, Channel7 };
-    m_NEC[12] = { 0xFFA857, Channel8 };
-
-    m_SONY[0]  = { 0x000490, VolumeUp };
-    m_SONY[1]  = { 0x000C90, VolumeDown };
-    m_SONY[2]  = { 0x03EB92, ChannelUp };
-    m_SONY[3]  = { 0x0DEB92, ChannelDown };
-    m_SONY[4]  = { 0x000A50, TV_On };
-    m_SONY[5]  = { 0x000B92, Channel1 };
-    m_SONY[6]  = { 0x080B92, Channel2 };
-    m_SONY[7]  = { 0x040B92, Channel3 };
-    m_SONY[8]  = { 0x0C0B92, Channel4 };
-    m_SONY[9]  = { 0x020B92, Channel5 };
-    m_SONY[10] = { 0x0A0B92, Channel6 };
-    m_SONY[11] = { 0x060B92, Channel7 };
-    m_SONY[12] = { 0x0E0B92, Channel8 };
-
-    m_RC5[0]  = { 0x1010, VolumeUp };
-    m_RC5[1]  = { 0x1011, VolumeDown };
-    m_RC5[2]  = { 1234, ChannelUp };
-    m_RC5[3]  = { 1234, ChannelDown };
-    m_RC5[4]  = { 0x100C, TV_On };
-    m_RC5[5]  = { 1234, Channel1 };
-    m_RC5[6]  = { 1234, Channel2 };
-    m_RC5[7]  = { 1234, Channel3 };
-    m_RC5[8]  = { 1234, Channel4 };
-    m_RC5[9]  = { 1234, Channel5 };
-    m_RC5[10] = { 1234, Channel6 };
-    m_RC5[12] = { 1234, Channel7 };
-    m_RC5[12] = { 1234, Channel8 };
-}
-
-bool IRCommands::checkJumpers()
+void IRCommands::checkJumpers()
 {
     m_checkTV = digitalRead(PinCheckTV);
 
@@ -211,29 +165,29 @@ bool IRCommands::checkJumpers()
     switch (protocolSelect)
     {
         case 0:
-            m_useNEC = false;
+            m_useNEC  = false;
             m_useSony = false;
-            m_useRC5 = false;
+            m_useRC5  = false;
             break;
         case 1:
-            m_useNEC = true;
+            m_useNEC  = true;
             m_useSony = false;
-            m_useRC5 = false;
+            m_useRC5  = false;
             break;
         case 2:
-            m_useNEC = false;
+            m_useNEC  = false;
             m_useSony = true;
-            m_useRC5 = false;
+            m_useRC5  = false;
             break;
         case 3:
-            m_useNEC = false;
+            m_useNEC  = false;
             m_useSony = false;
-            m_useRC5 = true;
+            m_useRC5  = true;
             break;
         default:
-            m_useNEC = false;
+            m_useNEC  = false;
             m_useSony = false;
-            m_useRC5 = false;
+            m_useRC5  = false;
             break;
     }
 }
