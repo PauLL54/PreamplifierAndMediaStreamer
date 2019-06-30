@@ -6,17 +6,11 @@ const int PinCheckTV = 13;          // PB5;
 const int PinCheckProtocol1 = 5;    // PD5;
 const int PinCheckProtocol2 = 6;    // PD6;
 
-const unsigned long StartRepeatTime = 300; // millis
-const unsigned long SonyTimeout = 100; // millis
-
 IRCommands::IRCommands(InputChannelSelector& inputChannelSelector, DigitalPotmeter& digitalPotmeter) :
     m_inputChannelSelector(inputChannelSelector),
     m_digitalPotmeter(digitalPotmeter),
     m_IRReceiver(PinIRReceiver),
     m_IRDecoder(),
-    m_lastCommand(NoCommand),
-    m_lastTimeCommand(0),
-    m_lastTimeSonyCommand(0),
     m_checkTV(false),
     m_TV_IsOn(false),
     m_useNEC(false),
@@ -33,126 +27,89 @@ IRCommands::IRCommands(InputChannelSelector& inputChannelSelector, DigitalPotmet
 void IRCommands::checkForCommands()
 {
     checkJumpers();
-    handleCommand(getCommand());
+    handleProtocolCommand(getProtocolCommand());
 }
 
-IRCommands::Command IRCommands::getCommand()
+Protocol::Command IRCommands::getProtocolCommand()
 {
-    IRCommands::Command command = NoCommand;
+    Protocol::Command command = Protocol::NoCommand;
     if (m_IRReceiver.getResults()) 
     {
         m_IRDecoder.decode();
-        
-        uint32_t code = m_IRDecoder.value;
-        command = getCommand(m_IRDecoder.protocolNum, code);
-        
-        if (code != REPEAT_CODE) 
+
+        Protocol* protocol = getProtocol(m_IRDecoder.protocolNum);
+        if (protocol != nullptr)
         {
-            m_lastCommand = command;
-            m_lastTimeCommand = millis();
+            command = protocol->getCommand(m_IRDecoder.value);
         }
-        
+
         m_IRReceiver.enableIRIn();
     }
 
     return command;
 }
 
-IRCommands::Command IRCommands::getCommand(uint8_t protocol, uint32_t code)
-{
-    IRCommands::Command command = NoCommand;
-
-    switch (protocol)
-    {
-        case UNKNOWN:
-            break;
-        case NEC:       // protocol 1
-            if ( (code == REPEAT_CODE) && (millis() - m_lastTimeCommand > StartRepeatTime) )
-                command = m_lastCommand;
-            else
-                command = getCommand(m_NEC, code);
-            break;
-        case SONY:      // protocol 2
-            if (millis() - m_lastTimeSonyCommand > StartRepeatTime)
-                command = getCommand(m_SONY, code);
-            if (millis() - m_lastTimeCommand > SonyTimeout) // a button click produces many codes after each other
-            {
-                command = getCommand(m_SONY, code);         // just take the first one and ignore the rest
-                m_lastTimeSonyCommand = millis();
-            }
-            break;
-        case RC5:       // protocol 3
-            code &= 0xf7ff;
-            command = getCommand(m_RC5, code);
-            break;
-        case RC6:       // protocol 4
-            code &= 0xfeffff;
-            break;
-        default:
-            break;
-    }
-    //Serial.print(code, HEX); Serial.print(" protocol: "); Serial.println(protocol);
-    return command;
-}
-
-IRCommands::Command IRCommands::getCommand(CodeCommandPair (&pairs)[NumberOfCommands], uint32_t code)
-{
-    IRCommands::Command command = NoCommand;
-    for (uint32_t i = 0; i < sizeof(pairs) / sizeof(CodeCommandPair); ++i) 
-    {
-        if (pairs[i].code == code)
-            return pairs[i].command;
-    }
-
-    return command;
-}
-
-void IRCommands::handleCommand(Command command)
+void IRCommands::handleProtocolCommand(Protocol::Command command)
 {
     switch (command)
     {
-        case NoCommand:
+        case Protocol::NoCommand:
             break;
-        case VolumeUp:
+        case Protocol::VolumeUp:
             m_digitalPotmeter.up();
             break;
-        case VolumeDown:
+        case Protocol::VolumeDown:
             m_digitalPotmeter.down();
             break;
-        case ChannelUp:
+        case Protocol::ChannelUp:
             m_inputChannelSelector.selectNextChannel();
             break;
-        case ChannelDown:
+        case Protocol::ChannelDown:
             m_inputChannelSelector.selectPreviousChannel();
             break;
-        case TV_On:
-            m_TV_IsOn = !m_TV_IsOn;
-            break;
-        case Channel1:
+        case Protocol::Channel1:
             m_inputChannelSelector.selectChannel(0);
             break;
-        case Channel2:
+        case Protocol::Channel2:
             m_inputChannelSelector.selectChannel(1);
             break;
-        case Channel3:
+        case Protocol::Channel3:
             m_inputChannelSelector.selectChannel(2);
             break;
-        case Channel4:
+        case Protocol::Channel4:
             m_inputChannelSelector.selectChannel(3);
             break;
-        case Channel5:
+        case Protocol::Channel5:
             m_inputChannelSelector.selectChannel(4);
             break;
-        case Channel6:
+        case Protocol::Channel6:
             m_inputChannelSelector.selectChannel(5);
             break;
-        case Channel7:
+        case Protocol::Channel7:
             m_inputChannelSelector.selectChannel(6);
             break;
-        case Channel8:
+        case Protocol::Channel8:
             m_inputChannelSelector.selectChannel(7);
             break;
+        case Protocol::TV_On:
+            m_TV_IsOn = !m_TV_IsOn;
+            break;
     }
+}
+
+Protocol *IRCommands::getProtocol(uint8_t protocolType)
+{
+    for (uint32_t i = 0; i < sizeof(m_protocolData) / sizeof(ProtocolData); ++i) 
+    {
+        if (m_protocolData[i].protocolType == protocolType)
+        {
+            return m_protocolData[i].protocol;
+        }
+    }
+
+    Serial.print("getProtocol(): protocolType not found: "); 
+    Serial.println(protocolType);
+    return nullptr;
 }
 
 void IRCommands::checkJumpers()
