@@ -7,3 +7,5 @@
 *.pdb
 *.idb
 *.ipch
+*.bin
+
