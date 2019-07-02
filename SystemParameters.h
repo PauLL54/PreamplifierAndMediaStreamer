@@ -18,5 +18,4 @@ namespace Pin
     const int ChannelLedsLeakage    = 17;   // PC3
     const int VolumeEncoderA        = 18;   // PC4
     const int VolumeEncoderB        = 19;   // PC5
-    
 }
