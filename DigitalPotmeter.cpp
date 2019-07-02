@@ -44,7 +44,7 @@ void DigitalPotmeter::down()
         m_targetValue = 0;
 }
 
-void DigitalPotmeter::updateDevice()
+void DigitalPotmeter::updateToTargetValue()
 {
     if (m_state == PulsingUp)
     {

@@ -10,7 +10,7 @@ public:
     void setTargetValue(int targetValue);
     void up();
     void down();
-    void updateDevice();
+    void updateToTargetValue();
 
 private:
     void handlePulsingUp();
