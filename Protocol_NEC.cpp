@@ -22,7 +22,7 @@ Protocol::Command Protocol_NEC::getCommand(uint32_t code)
 {
     Command command = NoCommand;
 
-    if ( (code == getRepeatCode()) && (millis() - m_lastTimeCommand > getStartRepeatTime()) )
+    if ( (code == getRepeatCode()) && (millis() - m_lastTimeCommand > getStartRepeatingKeyTime()) )
         command = m_lastCommand;
     else
         command = Protocol::getCommand(code);

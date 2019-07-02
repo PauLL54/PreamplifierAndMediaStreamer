@@ -16,7 +16,7 @@ public:
 
 protected:
     void addCodeForCommand(Command command, uint32_t code);
-	unsigned long getStartRepeatTime() const;
+	unsigned long getStartRepeatingKeyTime() const;
 	uint32_t getRepeatCode() const;
 	Command         m_lastCommand;	// TODO make method
 	unsigned long   m_lastTimeCommand;

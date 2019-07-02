@@ -25,7 +25,7 @@ Protocol::Command Protocol_Sony::getCommand(uint32_t code)
 {
     Command command = NoCommand;
 
-    if (millis() - m_lastTimeSonyCommand > getStartRepeatTime())
+    if (millis() - m_lastTimeSonyCommand > getStartRepeatingKeyTime())
         command = Protocol::getCommand( code);
 
     // a button click produces many codes after each other

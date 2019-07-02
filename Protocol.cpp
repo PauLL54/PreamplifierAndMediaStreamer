@@ -2,7 +2,7 @@
 #include "Protocol.h"
 #include "Arduino.h"
 
-const unsigned long StartRepeatTime = 300; // millis
+const unsigned long StartRepeatingKeyTime = 300; // millis
 const uint32_t RepeatCode = 0xffffffff;
 
 Protocol::Protocol() :
@@ -54,9 +54,9 @@ int Protocol::findCommandIndex(Command command)
     return -1;
 }
 
-unsigned long Protocol::getStartRepeatTime() const
+unsigned long Protocol::getStartRepeatingKeyTime() const
 {
-    return StartRepeatTime;
+    return StartRepeatingKeyTime;
 }
 
 uint32_t Protocol::getRepeatCode() const
