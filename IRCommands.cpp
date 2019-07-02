@@ -1,15 +1,11 @@
 //  Copyright © 2019 Paul Langemeijer. All rights reserved.
 #include "IRCommands.h"
-
-const int PinIRReceiver = 2;        // PD2 
-const int PinCheckTV = 13;          // PB5;
-const int PinCheckProtocol1 = 5;    // PD5;
-const int PinCheckProtocol2 = 6;    // PD6;
+#include "SystemParameters.h"
 
 IRCommands::IRCommands(InputChannelSelector& inputChannelSelector, DigitalPotmeter& digitalPotmeter) :
     m_inputChannelSelector(inputChannelSelector),
     m_digitalPotmeter(digitalPotmeter),
-    m_IRReceiver(PinIRReceiver),
+    m_IRReceiver(Pin::IRReceiver),
     m_IRDecoder(),
     m_checkTV(false),
     m_TV_IsOn(false),
@@ -17,9 +13,9 @@ IRCommands::IRCommands(InputChannelSelector& inputChannelSelector, DigitalPotmet
     m_useSony(false),
     m_useRC5(false)
 {
-    pinMode(PinCheckTV,        INPUT_PULLUP);
-    pinMode(PinCheckProtocol1, INPUT_PULLUP);
-    pinMode(PinCheckProtocol2, INPUT_PULLUP);
+    pinMode(Pin::JumperIRCheckTVIsOn,   INPUT_PULLUP);
+    pinMode(Pin::JumperIRProtocol1,     INPUT_PULLUP);
+    pinMode(Pin::JumperIRProtocol2,     INPUT_PULLUP);
 
     m_IRReceiver.enableIRIn(); // Start the receiver
 }
@@ -114,10 +110,10 @@ Protocol *IRCommands::getProtocol(uint8_t protocolType)
 
 void IRCommands::checkJumpers()
 {
-    m_checkTV = digitalRead(PinCheckTV);
+    m_checkTV = digitalRead(Pin::JumperIRCheckTVIsOn);
 
-    int p1 = digitalRead(PinCheckProtocol1);
-    int p2 = digitalRead(PinCheckProtocol2);
+    int p1 = digitalRead(Pin::JumperIRProtocol1);
+    int p2 = digitalRead(Pin::JumperIRProtocol2);
     int protocolSelect = p1 + (p2 << 1);
     switch (protocolSelect)
     {

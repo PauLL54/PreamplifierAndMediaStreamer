@@ -100,7 +100,7 @@ void DigitalPotmeter::handlePulsingUp()
         if (m_actualValue > MaxSteps)
             m_actualValue = MaxSteps;
         
-        m_neoPixelRing.set5bitsValue(m_actualValue);
+        m_neoPixelRing.setValue(m_actualValue, MaxSteps);
     }
 }
 
@@ -114,6 +114,6 @@ void DigitalPotmeter::handlePulsingDown()
         if (m_actualValue < 0)
             m_actualValue = 0;
         
-        m_neoPixelRing.set5bitsValue(m_actualValue);
+        m_neoPixelRing.setValue(m_actualValue, MaxSteps);
     }
 }

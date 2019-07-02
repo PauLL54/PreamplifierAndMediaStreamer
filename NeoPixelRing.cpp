@@ -3,7 +3,6 @@
 #include "SystemParameters.h"
 
 const int NumberOfLeds = 24;
-const int Max5Bits = 31;
 const int DefaultBrightness = 50;
 
 NeoPixelRing::NeoPixelRing() :
@@ -11,12 +10,12 @@ NeoPixelRing::NeoPixelRing() :
 {
 }
 
-void NeoPixelRing::set5bitsValue(int _5bitsValue)
+void NeoPixelRing::setValue(int value, int maxValue)
 {
     m_LedRing.begin();
     m_LedRing.setBrightness(DefaultBrightness);
 
-    uint16_t ledValue = 0.5 + _5bitsValue * NumberOfLeds / Max5Bits; // normalize
+    uint16_t ledValue = 0.5 + value * NumberOfLeds / maxValue; // normalize
 
     // white:
     uint8_t r_white = 255;
