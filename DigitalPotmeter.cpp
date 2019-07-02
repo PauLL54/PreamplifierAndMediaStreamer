@@ -1,11 +1,10 @@
 //  Copyright © 2019 Paul Langemeijer. All rights reserved.
 #include "DigitalPotmeter.h"
 #include "Arduino.h"
+#include "SystemParameters.h"
 
-const int PinUp = 7;   // PD7
-const int PinDown = 8; // PB0
-const int MaxDebounceTime = 60; // ms
-const int MaxSteps = 31;
+const int MaxDebounceTime_ms = 60;  // XICOR X9514 digital potentiometer
+const int MaxSteps = 31;            // XICOR X9514 digital potentiometer
 
 DigitalPotmeter::DigitalPotmeter() :
     m_targetValue(0),
@@ -14,11 +13,11 @@ DigitalPotmeter::DigitalPotmeter() :
     m_pulseTimeOut(0),
     m_neoPixelRing()
 {
-   	pinMode(PinUp, OUTPUT);
-    pinMode(PinDown, OUTPUT);
+   	pinMode(Pin::DigitalPotmeterUp,   OUTPUT);
+    pinMode(Pin::DigitalPotmeterDown, OUTPUT);
 
-    digitalWrite(PinUp, HIGH);
-    digitalWrite(PinDown, HIGH);
+    digitalWrite(Pin::DigitalPotmeterUp,   HIGH);
+    digitalWrite(Pin::DigitalPotmeterDown, HIGH);
 }
 
 bool DigitalPotmeter::isInitialized() const
@@ -76,26 +75,26 @@ void DigitalPotmeter::startPulsingUp()
 {
     setTimeoutPulse();
     m_state = PulsingUp;
-    digitalWrite(PinUp, LOW);
+    digitalWrite(Pin::DigitalPotmeterUp, LOW);
 }
 
 void DigitalPotmeter::startPulsingDown()
 {
     setTimeoutPulse();
     m_state = PulsingDown;
-    digitalWrite(PinDown, LOW);
+    digitalWrite(Pin::DigitalPotmeterDown, LOW);
 }
 
 void DigitalPotmeter::setTimeoutPulse()
 {
-    m_pulseTimeOut = millis() + MaxDebounceTime;
+    m_pulseTimeOut = millis() + MaxDebounceTime_ms;
 }
 
 void DigitalPotmeter::handlePulsingUp()
 {
     if (millis() > m_pulseTimeOut)
     {
-        digitalWrite(PinUp, HIGH);
+        digitalWrite(Pin::DigitalPotmeterUp, HIGH);
         m_state = Idle;
         m_actualValue++;
         if (m_actualValue > MaxSteps)
@@ -109,7 +108,7 @@ void DigitalPotmeter::handlePulsingDown()
 {
     if (millis() > m_pulseTimeOut)
     {
-        digitalWrite(PinDown, HIGH);
+        digitalWrite(Pin::DigitalPotmeterDown, HIGH);
         m_state = Idle;
         m_actualValue--;
         if (m_actualValue < 0)

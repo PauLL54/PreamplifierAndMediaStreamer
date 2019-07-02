@@ -1,51 +1,40 @@
 //  Copyright © 2019 Paul Langemeijer. All rights reserved.
 #include "NeoPixelRing.h"
+#include "SystemParameters.h"
 
-//const int pinLedRing = 17; // PC3
-const int pinLedRing = 16; // PC2
 const int NumberOfLeds = 24;
 const int Max5Bits = 31;
+const int DefaultBrightness = 50;
 
 NeoPixelRing::NeoPixelRing() :
-    m_LedRing(NumberOfLeds, pinLedRing)
+    m_LedRing(NumberOfLeds, Pin::NeoPixelLedRing)
 {
 }
 
 void NeoPixelRing::set5bitsValue(int _5bitsValue)
 {
     m_LedRing.begin();
-    m_LedRing.setBrightness(50);
+    m_LedRing.setBrightness(DefaultBrightness);
 
     uint16_t ledValue = 0.5 + _5bitsValue * NumberOfLeds / Max5Bits; // normalize
 
-    uint8_t r = 255;
-    uint8_t g = 255;
-    uint8_t b = 155;
+    // white:
+    uint8_t r_white = 255;
+    uint8_t g_white = 255;
+    uint8_t b_white = 155;
 
-    // if (ledValue > 16)
-    // {
-    //     g = 165; b = 0; //orange
-    // }
+    // green:
+    uint8_t r_green = 0;
+    uint8_t g_green = 255;
+    uint8_t b_green = 0;
 
     for (uint16_t i = 0; i < NumberOfLeds; i++) 
     {  
         if (i >= ledValue)               
-            m_LedRing.setPixelColor(i, 0, 255, 0);
+            m_LedRing.setPixelColor(i, r_green, g_green, b_green);
         else 
-            m_LedRing.setPixelColor(i, r, g, b);
+            m_LedRing.setPixelColor(i, r_white, g_white, b_white);
     }
-
-    // for (uint16_t i = 0; i < NumberOfLeds; i++) 
-    // {  
-    //     if (i >= ledValue)               
-    //         m_LedRing.setPixelColor(i, 0, 0, 0);
-    //     else if (i >= 20)               
-    //         m_LedRing.setPixelColor(i, 255, 0, 0);      // red
-    //     else if (i >= 16)               
-    //         m_LedRing.setPixelColor(i, 255, 165, 0);    // orange
-    //     else 
-    //         m_LedRing.setPixelColor(i, 255, 255, 255);  // white
-    // }
 
     m_LedRing.show();
 }

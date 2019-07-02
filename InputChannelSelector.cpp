@@ -1,16 +1,13 @@
 //  Copyright © 2019 Paul Langemeijer. All rights reserved.
 #include "InputChannelSelector.h"
 #include "Arduino.h"
-
-const int BIT0 = 11;	// PB3
-const int BIT1 = 10;	// PB2
-const int BIT2 =  9;	// PB1
+#include "SystemParameters.h"
 
 InputChannelSelector::InputChannelSelector()
 {
-	pinMode(BIT0, OUTPUT);
-	pinMode(BIT1, OUTPUT);
-	pinMode(BIT2, OUTPUT);
+	pinMode(Pin::ChannelSelectBit0, OUTPUT);
+	pinMode(Pin::ChannelSelectBit1, OUTPUT);
+	pinMode(Pin::ChannelSelectBit2, OUTPUT);
 
 	selectChannel(6); // music server
 }
@@ -44,9 +41,9 @@ void InputChannelSelector::switchToChannel(int channel)
 	int bit0 = channel & 1 ? HIGH : LOW;
 	int bit1 = channel & 2 ? HIGH : LOW;
 	int bit2 = channel & 4 ? HIGH : LOW;
-	digitalWrite(BIT0, bit0);
-	digitalWrite(BIT1, bit1);
-	digitalWrite(BIT2, bit2);
+	digitalWrite(Pin::ChannelSelectBit0, bit0);
+	digitalWrite(Pin::ChannelSelectBit1, bit1);
+	digitalWrite(Pin::ChannelSelectBit2, bit2);
 	//Serial.print("switchToChannel: "); Serial.println(channel);
 }
 
