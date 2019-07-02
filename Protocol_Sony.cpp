@@ -1,10 +1,10 @@
 //  Copyright © 2019 Paul Langemeijer. All rights reserved.
 #include "Protocol_Sony.h"
 
-const unsigned long SonyTimeout = 100; // millis
+const unsigned long DebounceTime = 200; // millis
 
 Protocol_Sony::Protocol_Sony() : Protocol(),
-    m_lastTimeSonyCommand(0)
+    m_lastTimeCommand(0)
 {
     addCodeForCommand(VolumeUp,     0x000490);
     addCodeForCommand(VolumeDown,   0x000C90);
@@ -18,22 +18,17 @@ Protocol_Sony::Protocol_Sony() : Protocol(),
     addCodeForCommand(Channel6,     0x0A0B92);
     addCodeForCommand(Channel7,     0x060B92);
     addCodeForCommand(Channel8,     0x0E0B92);
-    addCodeForCommand(TV_On,        0x000A50);
+    addCodeForCommand(TV_OnOff,     0x000A50);
 }
 
 Protocol::Command Protocol_Sony::getCommand(uint32_t code)
 {
     Command command = NoCommand;
 
-    if (millis() - m_lastTimeSonyCommand > getStartRepeatingKeyTime())
-        command = Protocol::getCommand( code);
-
-    // a button click produces many codes after each other
-    // just take the first one and ignore the rest
-    if (millis() - m_lastTimeCommand > SonyTimeout)
+    if (millis() - m_lastTimeCommand > DebounceTime)
     {
         command = Protocol::getCommand(code);
-        m_lastTimeSonyCommand = millis();
+        m_lastTimeCommand = millis();
     }        
 
     return command;

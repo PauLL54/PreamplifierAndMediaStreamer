@@ -10,5 +10,5 @@ public:
 	Command getCommand(uint32_t code) override;
 
 private:
-	unsigned long m_lastTimeSonyCommand;
+	unsigned long m_lastTimeCommand;
 };

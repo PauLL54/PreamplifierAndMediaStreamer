@@ -1,7 +1,12 @@
 //  Copyright © 2019 Paul Langemeijer. All rights reserved.
 #include "Protocol_NEC.h"
 
-Protocol_NEC::Protocol_NEC() : Protocol()
+const unsigned long StartRepeatingKeyTime = 500; // millis
+const uint32_t RepeatCode = 0xffffffff;
+
+Protocol_NEC::Protocol_NEC() : Protocol(),
+    m_lastCommand(NoCommand),
+    m_lastTimeCommand(0)
 {
     addCodeForCommand(VolumeUp,     0xFF18E7);
     addCodeForCommand(VolumeDown,   0xFF4AB5);
@@ -15,17 +20,24 @@ Protocol_NEC::Protocol_NEC() : Protocol()
     addCodeForCommand(Channel6,     0xFFC23D);
     addCodeForCommand(Channel7,     0xFFE01F);
     addCodeForCommand(Channel8,     0xFFA857);
-    addCodeForCommand(TV_On,        0x000000);
+    addCodeForCommand(TV_OnOff,     0x000000); // TODO
 }
 
 Protocol::Command Protocol_NEC::getCommand(uint32_t code)
 {
     Command command = NoCommand;
 
-    if ( (code == getRepeatCode()) && (millis() - m_lastTimeCommand > getStartRepeatingKeyTime()) )
+    if ( (code == RepeatCode) && (millis() - m_lastTimeCommand > StartRepeatingKeyTime) )
         command = m_lastCommand;
     else
+    {
         command = Protocol::getCommand(code);
+        if (code != RepeatCode) 
+        {
+            m_lastCommand = command;
+            m_lastTimeCommand = millis();
+        }    
+    }
         
     return command;
 }

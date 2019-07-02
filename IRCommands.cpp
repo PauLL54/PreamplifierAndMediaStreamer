@@ -58,9 +58,11 @@ void IRCommands::handleProtocolCommand(Protocol::Command command)
             m_digitalPotmeter.down();
             break;
         case Protocol::ChannelUp:
+        case Protocol::ChannelUp2:
             m_inputChannelSelector.selectNextChannel();
             break;
         case Protocol::ChannelDown:
+        case Protocol::ChannelDown2:
             m_inputChannelSelector.selectPreviousChannel();
             break;
         case Protocol::Channel1:
@@ -87,7 +89,7 @@ void IRCommands::handleProtocolCommand(Protocol::Command command)
         case Protocol::Channel8:
             m_inputChannelSelector.selectChannel(7);
             break;
-        case Protocol::TV_On:
+        case Protocol::TV_OnOff:
             m_TV_IsOn = !m_TV_IsOn;
             break;
     }

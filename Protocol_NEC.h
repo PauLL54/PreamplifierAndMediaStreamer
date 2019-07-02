@@ -8,4 +8,8 @@ public:
 	Protocol_NEC();
 
 	Command getCommand(uint32_t code) override;
+
+private:
+	Command         m_lastCommand;
+	unsigned long   m_lastTimeCommand;
 };

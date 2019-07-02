@@ -8,4 +8,7 @@ public:
 	Protocol_RC5();
 
 	Command getCommand(uint32_t code) override;
+
+private:
+	unsigned long m_lastTimeCommand;
 };
