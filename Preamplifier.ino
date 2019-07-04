@@ -4,6 +4,7 @@
 #include "DigitalPotmeter.h"
 #include "VolumeRotaryEncoder.h"
 #include "IRCommands.h"
+#include "SystemParameters.h"
 
 InputChannelSelector      m_inputChannelSelector;
 InputChannelSelectButton  m_inputChannelSelectButton(m_inputChannelSelector);
@@ -18,6 +19,12 @@ void setup()
   Serial.begin(9600);
 }
 
+void switchOnOutputRelay()
+{
+  pinMode(Pin::OutputRelay, OUTPUT);
+  digitalWrite(Pin::OutputRelay, LOW);
+}
+
 void initializeDigitalPotmeter()
 {
     m_digitalPotmeter.updateToTargetValue();
@@ -25,6 +32,7 @@ void initializeDigitalPotmeter()
     {
       m_initializing = false;
       m_digitalPotmeter.setTargetValue(10);
+      switchOnOutputRelay();
     }
 }
 
