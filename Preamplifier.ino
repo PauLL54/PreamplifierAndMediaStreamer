@@ -14,9 +14,16 @@ IRCommands                m_IRCommands(m_inputChannelSelector, m_digitalPotmeter
 
 bool m_initializing = true;
 
+void enableChannelLedsLeakage()
+{
+  pinMode(Pin::ChannelLedsLeakage, OUTPUT);
+  digitalWrite(Pin::ChannelLedsLeakage, LOW);
+}
+
 void setup() 
 {
   Serial.begin(9600);
+  enableChannelLedsLeakage();
 }
 
 void switchOnOutputRelay()
