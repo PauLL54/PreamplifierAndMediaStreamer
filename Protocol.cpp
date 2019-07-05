@@ -11,7 +11,7 @@ void Protocol::addCodeForCommand(Command command, uint32_t code)
 {
     int i = findCommandIndex(command);
 
-    if (i != -1 && i < getLengthCodes())
+    if (i != -1 && i < static_cast<int>(getLengthCodes()) )
         m_codes[i].code = code;
 }
 
