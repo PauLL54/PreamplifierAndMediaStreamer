@@ -47,8 +47,3 @@ void InputChannelSelector::switchToChannel(int channel)
 	Serial.print("switchToChannel: "); Serial.println(channel);
 }
 
-void InputChannelSelector::disableDisplay()
-{
-	
-}
-

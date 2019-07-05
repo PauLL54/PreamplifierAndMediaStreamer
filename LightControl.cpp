@@ -6,8 +6,8 @@
 #include "DigitalPotmeter.h"
 #include "Arduino.h"
 
-const unsigned long LightOnTime =  30L * 60L * 1000L; // ms after 30 minutes, switch off the display
-//const unsigned long LightOnTime = 3000; // ms for testing
+const unsigned long DisplayOnTime =  30L * 60L * 1000L; // ms after 30 minutes, switch off the display
+//const unsigned long DisplayOnTime = 3000; // ms for testing
 
 LightControl::LightControl(	InputChannelSelectButton &inputChannelSelectButton,
 				            VolumeRotaryEncoder &volumeRotaryEncoder,
@@ -17,7 +17,7 @@ LightControl::LightControl(	InputChannelSelectButton &inputChannelSelectButton,
     m_volumeRotaryEncoder(volumeRotaryEncoder),
     m_irCommands(irCommands),
     m_digitalPotmeter(digitalPotmeter),
-    m_timeout(millis() + LightOnTime)
+    m_timeout(millis() + DisplayOnTime)
 {
 }
 
@@ -30,7 +30,7 @@ void LightControl::checkUserActions()
 
 void LightControl::updateTimeout(unsigned long lastTimeUserAction)
 {
-    unsigned long timeout = lastTimeUserAction + LightOnTime;
+    unsigned long timeout = lastTimeUserAction + DisplayOnTime;
     if (timeout > millis() && timeout > m_timeout)
     {
         //Serial.println("new timeout set");
@@ -38,7 +38,7 @@ void LightControl::updateTimeout(unsigned long lastTimeUserAction)
     }
 }
 
-void LightControl::checkSwitchOffNeeded()
+void LightControl::checkDisplaySwitchOffNeeded()
 {
     checkUserActions();
 

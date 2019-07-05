@@ -14,7 +14,7 @@ public:
 				 IRCommands &irCommands,
 				 DigitalPotmeter &digitalPotmeter);
 
-	void checkSwitchOffNeeded();
+	void checkDisplaySwitchOffNeeded();
 
 private:
 	void checkUserActions();

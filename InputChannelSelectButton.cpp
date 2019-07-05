@@ -3,11 +3,11 @@
 #include "Arduino.h"
 #include "SystemParameters.h"
 
-const int BounceTime_ms = 10;
+const int DebounceTime_ms = 10;
 
 InputChannelSelectButton::InputChannelSelectButton(InputChannelSelector& inputChannelSelector) :
     m_inputChannelSelector(inputChannelSelector),
-    m_debouncer(BounceTime_ms),
+    m_debouncer(DebounceTime_ms),
     m_lastTimeUserAction(0)
 {
     pinMode(Pin::ChannelSelectButton, INPUT_PULLUP);

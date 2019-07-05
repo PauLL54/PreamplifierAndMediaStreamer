@@ -57,6 +57,6 @@ void loop()
     m_volumeRotaryEncoder.checkRotation();
     m_IRCommands.checkForCommands();
     m_digitalPotmeter.updateToTargetValue();
-    m_lightControl.checkSwitchOffNeeded();
+    m_lightControl.checkDisplaySwitchOffNeeded();
   }
 }

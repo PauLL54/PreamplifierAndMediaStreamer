@@ -9,7 +9,6 @@ public:
 	void selectChannel(int channel); // 0..7
 	void selectNextChannel();
 	void selectPreviousChannel();
-	void disableDisplay();
 
 private:
 	void switchToChannel(int channel);
