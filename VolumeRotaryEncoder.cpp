@@ -8,7 +8,8 @@ const int DebounceTime_ms = 1;
 VolumeRotaryEncoder::VolumeRotaryEncoder(DigitalPotmeter& digitalPotmeter) :
     m_digitalPotmeter(digitalPotmeter),
     m_pinALast(0),
-    m_debouncer(DebounceTime_ms)
+    m_debouncer(DebounceTime_ms),
+    m_lastTimeUserAction(0)
 {
        pinMode (Pin::VolumeEncoderA, INPUT_PULLUP);
        pinMode (Pin::VolumeEncoderB, INPUT_PULLUP);
@@ -37,7 +38,12 @@ void VolumeRotaryEncoder::checkRotation()
             m_digitalPotmeter.down();
         } 
         m_pinALast = valuePinA;
+        
+        m_lastTimeUserAction = millis();
     }
 }
 
-
+unsigned long VolumeRotaryEncoder::getLastTimeUserAction() const
+{
+    return m_lastTimeUserAction;
+}

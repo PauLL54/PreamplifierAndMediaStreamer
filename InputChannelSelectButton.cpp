@@ -7,7 +7,8 @@ const int BounceTime_ms = 10;
 
 InputChannelSelectButton::InputChannelSelectButton(InputChannelSelector& inputChannelSelector) :
     m_inputChannelSelector(inputChannelSelector),
-    m_debouncer(BounceTime_ms)
+    m_debouncer(BounceTime_ms),
+    m_lastTimeUserAction(0)
 {
     pinMode(Pin::ChannelSelectButton, INPUT_PULLUP);
 }
@@ -20,5 +21,12 @@ void InputChannelSelectButton::checkButtonPressed()
     if (m_debouncer.inputChangedToLow())
     {
         m_inputChannelSelector.selectNextChannel();
+
+        m_lastTimeUserAction = millis();
     }
+}
+
+unsigned long InputChannelSelectButton::getLastTimeUserAction() const
+{
+    return m_lastTimeUserAction;
 }

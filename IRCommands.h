@@ -12,6 +12,7 @@ public:
 	IRCommands(InputChannelSelector& inputChannelSelector, DigitalPotmeter& digitalPotmeter);
 
 	void checkForCommands();
+	unsigned long getLastTimeUserAction() const;
 
 private:
 	Protocol::Command getProtocolCommand();
@@ -25,6 +26,7 @@ private:
 	DigitalPotmeter& m_digitalPotmeter;
 	IRrecvPCI m_IRReceiver;
 	IRdecode  m_IRDecoder;
+    unsigned long m_lastTimeUserAction;
 
 	bool m_checkTV;
 	bool m_TV_IsOn;

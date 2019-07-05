@@ -5,12 +5,14 @@
 #include "VolumeRotaryEncoder.h"
 #include "IRCommands.h"
 #include "SystemParameters.h"
+#include "LightControl.h"
 
 InputChannelSelector      m_inputChannelSelector;
 InputChannelSelectButton  m_inputChannelSelectButton(m_inputChannelSelector);
 DigitalPotmeter           m_digitalPotmeter;
 VolumeRotaryEncoder       m_volumeRotaryEncoder(m_digitalPotmeter);
 IRCommands                m_IRCommands(m_inputChannelSelector, m_digitalPotmeter);
+LightControl              m_lightControl(m_inputChannelSelectButton, m_volumeRotaryEncoder, m_IRCommands);
 
 bool m_initializing = true;
 
@@ -55,5 +57,6 @@ void loop()
     m_volumeRotaryEncoder.checkRotation();
     m_IRCommands.checkForCommands();
     m_digitalPotmeter.updateToTargetValue();
+    m_lightControl.checkSwitchOffNeeded();
   }
 }

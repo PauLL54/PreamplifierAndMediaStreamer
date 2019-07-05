@@ -44,7 +44,7 @@ void InputChannelSelector::switchToChannel(int channel)
 	digitalWrite(Pin::ChannelSelectBit0, bit0);
 	digitalWrite(Pin::ChannelSelectBit1, bit1);
 	digitalWrite(Pin::ChannelSelectBit2, bit2);
-	//Serial.print("switchToChannel: "); Serial.println(channel);
+	Serial.print("switchToChannel: "); Serial.println(channel);
 }
 
 

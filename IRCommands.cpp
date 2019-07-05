@@ -7,6 +7,7 @@ IRCommands::IRCommands(InputChannelSelector& inputChannelSelector, DigitalPotmet
     m_digitalPotmeter(digitalPotmeter),
     m_IRReceiver(Pin::IRReceiver),
     m_IRDecoder(),
+    m_lastTimeUserAction(0),
     m_checkTV(false),
     m_TV_IsOn(false),
     m_useNEC(false),
@@ -93,6 +94,9 @@ void IRCommands::handleProtocolCommand(Protocol::Command command)
             m_TV_IsOn = !m_TV_IsOn;
             break;
     }
+
+    if (command != Protocol::NoCommand)
+        m_lastTimeUserAction = millis();
 }
 
 Protocol *IRCommands::getProtocol(uint8_t protocolType)
@@ -145,4 +149,9 @@ void IRCommands::checkJumpers()
             m_useRC5  = false;
             break;
     }
+}
+
+unsigned long IRCommands::getLastTimeUserAction() const
+{
+    return m_lastTimeUserAction;
 }

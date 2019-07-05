@@ -8,9 +8,11 @@ public:
 	VolumeRotaryEncoder(DigitalPotmeter& digitalPotmeter);
 
 	void checkRotation();
+    unsigned long getLastTimeUserAction() const;
 
 private:
 	DigitalPotmeter& m_digitalPotmeter;
 	int m_pinALast;
 	Debouncer m_debouncer;
+    unsigned long m_lastTimeUserAction;
 };
