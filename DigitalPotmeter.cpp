@@ -117,3 +117,8 @@ void DigitalPotmeter::handlePulsingDown()
         m_neoPixelRing.setValue(m_actualValue, MaxSteps);
     }
 }
+
+void DigitalPotmeter::disableDisplay()
+{
+    m_neoPixelRing.disableDisplay();
+}

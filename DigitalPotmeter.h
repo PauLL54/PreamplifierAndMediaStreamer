@@ -11,7 +11,8 @@ public:
     void up();
     void down();
     void updateToTargetValue();
-
+	void disableDisplay();
+    
 private:
     void handlePulsingUp();
     void handlePulsingDown();

@@ -7,6 +7,7 @@ public:
 	NeoPixelRing();
 
 	void setValue(int value, int maxValue);
+	void disableDisplay();
 
 private:
 	Adafruit_NeoPixel m_LedRing;

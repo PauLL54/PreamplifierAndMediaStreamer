@@ -12,7 +12,7 @@ InputChannelSelectButton  m_inputChannelSelectButton(m_inputChannelSelector);
 DigitalPotmeter           m_digitalPotmeter;
 VolumeRotaryEncoder       m_volumeRotaryEncoder(m_digitalPotmeter);
 IRCommands                m_IRCommands(m_inputChannelSelector, m_digitalPotmeter);
-LightControl              m_lightControl(m_inputChannelSelectButton, m_volumeRotaryEncoder, m_IRCommands);
+LightControl              m_lightControl(m_inputChannelSelectButton, m_volumeRotaryEncoder, m_IRCommands, m_digitalPotmeter);
 
 bool m_initializing = true;
 

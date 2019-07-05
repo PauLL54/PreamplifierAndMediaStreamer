@@ -37,3 +37,9 @@ void NeoPixelRing::setValue(int value, int maxValue)
 
     m_LedRing.show();
 }
+
+void NeoPixelRing::disableDisplay()
+{
+	m_LedRing.clear();
+    m_LedRing.show();
+}
