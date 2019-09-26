@@ -30,9 +30,6 @@ private:
 
 	bool m_checkTV;
 	bool m_TV_IsOn;
-	bool m_useNEC;
-	bool m_useSony;
-	bool m_useRC5;
 
 	struct ProtocolData { uint8_t protocolType; Protocol *protocol; };
 	ProtocolData m_protocolData[3] = {

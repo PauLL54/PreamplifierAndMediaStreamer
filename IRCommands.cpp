@@ -9,14 +9,9 @@ IRCommands::IRCommands(InputChannelSelector& inputChannelSelector, DigitalPotmet
     m_IRDecoder(),
     m_lastTimeUserAction(0),
     m_checkTV(false),
-    m_TV_IsOn(false),
-    m_useNEC(false),
-    m_useSony(false),
-    m_useRC5(false)
+    m_TV_IsOn(false)
 {
     pinMode(Pin::JumperIRCheckTVIsOn,   INPUT_PULLUP);
-    pinMode(Pin::JumperIRProtocol1,     INPUT_PULLUP);
-    pinMode(Pin::JumperIRProtocol2,     INPUT_PULLUP);
 
     m_IRReceiver.enableIRIn(); // Start the receiver
 }
@@ -117,38 +112,6 @@ Protocol *IRCommands::getProtocol(uint8_t protocolType)
 void IRCommands::checkJumpers()
 {
     m_checkTV = digitalRead(Pin::JumperIRCheckTVIsOn);
-
-    int p1 = digitalRead(Pin::JumperIRProtocol1);
-    int p2 = digitalRead(Pin::JumperIRProtocol2);
-    int protocolSelect = p1 + (p2 << 1);
-    switch (protocolSelect)
-    {
-        case 0:
-            m_useNEC  = false;
-            m_useSony = false;
-            m_useRC5  = false;
-            break;
-        case 1:
-            m_useNEC  = true;
-            m_useSony = false;
-            m_useRC5  = false;
-            break;
-        case 2:
-            m_useNEC  = false;
-            m_useSony = true;
-            m_useRC5  = false;
-            break;
-        case 3:
-            m_useNEC  = false;
-            m_useSony = false;
-            m_useRC5  = true;
-            break;
-        default:
-            m_useNEC  = false;
-            m_useSony = false;
-            m_useRC5  = false;
-            break;
-    }
 }
 
 unsigned long IRCommands::getLastTimeUserAction() const
