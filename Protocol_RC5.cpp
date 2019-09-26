@@ -1,7 +1,7 @@
 //  Copyright © 2019 Paul Langemeijer. All rights reserved.
 #include "Protocol_RC5.h"
 
-const unsigned long DebounceTime = 200; // millis
+const unsigned long DebounceTime = 100; //200; // millis
 
 Protocol_RC5::Protocol_RC5() : Protocol(),
     m_lastTimeCommand(0)
