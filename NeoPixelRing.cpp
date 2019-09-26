@@ -17,22 +17,24 @@ void NeoPixelRing::setValue(int value, int maxValue)
 
     uint16_t ledValue = 0.5 + value * NumberOfLeds / maxValue; // normalize
 
-    // white:
-    uint8_t r_white = 255;
-    uint8_t g_white = 255;
-    uint8_t b_white = 155;
+    // colorPixelsFromLeft:
+    // white:  255, 255, 155
+    // orange: 255, 100, 0
+    uint8_t r_colorPixelsFromLeft = 255;
+    uint8_t g_colorPixelsFromLeft = 100;
+    uint8_t b_colorPixelsFromLeft = 0;
 
-    // green:
-    uint8_t r_green = 0;
-    uint8_t g_green = 255;
-    uint8_t b_green = 0;
+    // colorPixelsFromRight: (black)
+    uint8_t r_colorPixelsFromRight = 0;
+    uint8_t g_colorPixelsFromRight = 0;
+    uint8_t b_colorPixelsFromRight = 0;
 
     for (uint16_t i = 0; i < NumberOfLeds; i++) 
     {  
         if (i >= ledValue)               
-            m_LedRing.setPixelColor(i, r_green, g_green, b_green);
+            m_LedRing.setPixelColor(i, r_colorPixelsFromRight, g_colorPixelsFromRight, b_colorPixelsFromRight);
         else 
-            m_LedRing.setPixelColor(i, r_white, g_white, b_white);
+            m_LedRing.setPixelColor(i, r_colorPixelsFromLeft, g_colorPixelsFromLeft, b_colorPixelsFromLeft);
     }
 
     m_LedRing.show();
