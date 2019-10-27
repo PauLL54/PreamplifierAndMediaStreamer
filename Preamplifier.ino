@@ -49,10 +49,10 @@ void setup()
   enableChannelLedsLeakage();
 }
 
-void switchOnOutputRelay()
+void EnableOutputs()
 {
-  pinMode(Pin::OutputRelay, OUTPUT);
-  digitalWrite(Pin::OutputRelay, LOW);
+  pinMode(Pin::EnableOutputs, OUTPUT);
+  digitalWrite(Pin::EnableOutputs, LOW);
 }
 
 void initializeDigitalPotmeter()
@@ -62,7 +62,7 @@ void initializeDigitalPotmeter()
     {
       m_initializing = false;
       m_digitalPotmeter.setTargetValue(10);
-      switchOnOutputRelay();
+      EnableOutputs();
     }
 }
 
