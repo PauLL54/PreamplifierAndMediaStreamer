@@ -8,10 +8,10 @@ IRCommands::IRCommands(InputChannelSelector& inputChannelSelector, DigitalPotmet
     m_IRReceiver(Pin::IRReceiver),
     m_IRDecoder(),
     m_lastTimeUserAction(0),
-    m_checkTV(false),
+    m_spare(false),
     m_TV_IsOn(false)
 {
-    pinMode(Pin::JumperIRCheckTVIsOn,   INPUT_PULLUP);
+    pinMode(Pin::Spare,   INPUT_PULLUP);
 
     m_IRReceiver.enableIRIn(); // Start the receiver
 }
@@ -111,7 +111,7 @@ Protocol *IRCommands::getProtocol(uint8_t protocolType)
 
 void IRCommands::checkJumpers()
 {
-    m_checkTV = digitalRead(Pin::JumperIRCheckTVIsOn);
+    m_spare = digitalRead(Pin::Spare);
 }
 
 unsigned long IRCommands::getLastTimeUserAction() const

@@ -9,7 +9,7 @@ namespace Pin
     const int AttenuatorUp          =  3;   // PD3
     const int AttenuatorDown        =  4;   // PD4
     const int BrightnessChannelLEDs =  5;   // PD5 PWM 980 Hz
-    const int JumperIRCheckTVIsOn   =  6;   // PD6
+    const int Spare                 =  6;   // PD6
     const int DigitalPotmeterUp     =  7;   // PD7
 
     const int DigitalPotmeterDown   =  8;   // PB0
@@ -21,12 +21,22 @@ namespace Pin
                                             // PB6: cannot be used
                                             // PB7: cannot be used
 
-    const int SwitchSelectOutputA   = 14;   // PC0
     const int ChannelSelectButton   = 15;	// PC1
     const int NeoPixelLedRing       = 16;   // PC2
+
+    #define VERSION1
+
+    #ifdef VERSION1
     const int ChannelLedsLeakage    = 17;   // PC3
     const int VolumeEncoderA        = 18;   // PC4
     const int VolumeEncoderB        = 19;   // PC5
+    #endif
+    #ifdef VERSION2
+    const int VolumeEncoderA        = 14;   // PC0
+    const int VolumeEncoderB        = 17;   // PC3
+    const int SCL                   = 18;   // PC4  I2C bus
+    const int SDA                   = 19;   // PC5  I2C bus
+    #endif
                                             // PC6: RESET-, used for programming
                                             // PC7: does not exist :)
 }
