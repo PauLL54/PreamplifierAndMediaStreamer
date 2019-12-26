@@ -48,10 +48,10 @@ void IRCommands::handleProtocolCommand(Protocol::Command command)
         case Protocol::NoCommand:
             break;
         case Protocol::VolumeUp:
-            m_digitalPotmeter.up();
+            if (!m_TV_IsOn) m_digitalPotmeter.up();
             break;
         case Protocol::VolumeDown:
-            m_digitalPotmeter.down();
+            if (!m_TV_IsOn) m_digitalPotmeter.down();
             break;
         case Protocol::ChannelUp:
         case Protocol::ChannelUp2:
