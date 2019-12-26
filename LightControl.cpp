@@ -6,7 +6,7 @@
 #include "DigitalPotmeter.h"
 #include "Arduino.h"
 
-const unsigned long DisplayOnTime =  30L * 60L * 1000L; // ms after 30 minutes, switch off the display
+const unsigned long DisplayOnTime =  5L * 60L * 1000L; // ms after some time, switch off the display
 //const unsigned long DisplayOnTime = 3000; // ms for testing
 
 LightControl::LightControl(	InputChannelSelectButton &inputChannelSelectButton,
