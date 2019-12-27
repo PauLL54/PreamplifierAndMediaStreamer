@@ -9,7 +9,7 @@ namespace Pin
     const int AttenuatorUp          =  3;   // PD3
     const int AttenuatorDown        =  4;   // PD4
     const int BrightnessChannelLEDs =  5;   // PD5 PWM 980 Hz
-    const int Spare                 =  6;   // PD6
+    const int CheckTV               =  6;   // PD6
     const int DigitalPotmeterUp     =  7;   // PD7
 
     const int DigitalPotmeterDown   =  8;   // PB0
