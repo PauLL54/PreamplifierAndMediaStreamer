@@ -12,7 +12,8 @@ public:
     void down();
     void updateToTargetValue();
 	void disableDisplay();
-    
+    void setAlternateColor(bool on);
+
 private:
     void handlePulsingUp();
     void handlePulsingDown();

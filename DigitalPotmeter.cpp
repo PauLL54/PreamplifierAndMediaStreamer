@@ -122,3 +122,9 @@ void DigitalPotmeter::disableDisplay()
 {
     m_neoPixelRing.disableDisplay();
 }
+
+void DigitalPotmeter::setAlternateColor(bool on)
+{
+    m_neoPixelRing.setAlternateColor(on);
+    m_neoPixelRing.setValue(m_actualValue, MaxSteps);
+}

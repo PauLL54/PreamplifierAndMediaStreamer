@@ -48,10 +48,14 @@ void IRCommands::handleProtocolCommand(Protocol::Command command)
         case Protocol::NoCommand:
             break;
         case Protocol::VolumeUp:
-            if (!m_TV_IsOn) m_digitalPotmeter.up();
+            if (!m_TV_IsOn) {
+                m_digitalPotmeter.up();
+            }
             break;
         case Protocol::VolumeDown:
-            if (!m_TV_IsOn) m_digitalPotmeter.down();
+            if (!m_TV_IsOn) {
+                 m_digitalPotmeter.down();
+            }
             break;
         case Protocol::ChannelUp:
         case Protocol::ChannelUp2:
@@ -86,7 +90,13 @@ void IRCommands::handleProtocolCommand(Protocol::Command command)
             m_inputChannelSelector.selectChannel(7);
             break;
         case Protocol::TV_OnOff:
-            if (m_checkTV) m_TV_IsOn = !m_TV_IsOn;
+            if (millis() > (m_lastTimeUserAction + 500)) {
+                if (m_checkTV) {
+                    m_TV_IsOn = !m_TV_IsOn;
+                    Serial.print("m_TV_IsOn="); Serial.println(m_TV_IsOn);
+                    m_digitalPotmeter.setAlternateColor(m_TV_IsOn);
+                }
+            }
             break;
     }
 
@@ -104,8 +114,8 @@ Protocol *IRCommands::getProtocol(uint8_t protocolType)
         }
     }
 
-    Serial.print("getProtocol(): protocolType not found: "); 
-    Serial.println(protocolType);
+    //Serial.print("getProtocol(): protocolType not found: "); 
+    //Serial.println(protocolType);
     return nullptr;
 }
 
