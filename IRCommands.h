@@ -28,8 +28,7 @@ private:
 	IRdecode  m_IRDecoder;
     unsigned long m_lastTimeUserAction;
 
-	bool m_checkTV;
-	bool m_TV_IsOn;
+	bool m_useNecOnly;
 
 	struct ProtocolData { uint8_t protocolType; Protocol *protocol; };
 	ProtocolData m_protocolData[3] = {

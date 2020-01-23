@@ -8,10 +8,9 @@ IRCommands::IRCommands(InputChannelSelector& inputChannelSelector, DigitalPotmet
     m_IRReceiver(Pin::IRReceiver),
     m_IRDecoder(),
     m_lastTimeUserAction(0),
-    m_checkTV(false),
-    m_TV_IsOn(false)
+    m_useNecOnly(false)
 {
-    pinMode(Pin::CheckTV, INPUT_PULLUP);
+    pinMode(Pin::NecOnly, INPUT_PULLUP);
 
     m_IRReceiver.enableIRIn(); // Start the receiver
 }
@@ -48,14 +47,10 @@ void IRCommands::handleProtocolCommand(Protocol::Command command)
         case Protocol::NoCommand:
             break;
         case Protocol::VolumeUp:
-            if (!m_TV_IsOn) {
-                m_digitalPotmeter.up();
-            }
+            m_digitalPotmeter.up();
             break;
         case Protocol::VolumeDown:
-            if (!m_TV_IsOn) {
-                 m_digitalPotmeter.down();
-            }
+            m_digitalPotmeter.down();
             break;
         case Protocol::ChannelUp:
         case Protocol::ChannelUp2:
@@ -90,13 +85,6 @@ void IRCommands::handleProtocolCommand(Protocol::Command command)
             m_inputChannelSelector.selectChannel(7);
             break;
         case Protocol::TV_OnOff:
-            if (millis() > (m_lastTimeUserAction + 500)) {
-                if (m_checkTV) {
-                    m_TV_IsOn = !m_TV_IsOn;
-                    Serial.print("m_TV_IsOn="); Serial.println(m_TV_IsOn);
-                    m_digitalPotmeter.setAlternateColor(m_TV_IsOn);
-                }
-            }
             break;
     }
 
@@ -106,6 +94,9 @@ void IRCommands::handleProtocolCommand(Protocol::Command command)
 
 Protocol *IRCommands::getProtocol(uint8_t protocolType)
 {
+    if (m_useNecOnly && (protocolType != NEC))
+        return nullptr;
+
     for (uint32_t i = 0; i < sizeof(m_protocolData) / sizeof(ProtocolData); ++i) 
     {
         if (m_protocolData[i].protocolType == protocolType)
@@ -121,7 +112,7 @@ Protocol *IRCommands::getProtocol(uint8_t protocolType)
 
 void IRCommands::checkJumpers()
 {
-    m_checkTV = digitalRead(Pin::CheckTV);
+    m_useNecOnly = digitalRead(Pin::NecOnly);
 }
 
 unsigned long IRCommands::getLastTimeUserAction() const
