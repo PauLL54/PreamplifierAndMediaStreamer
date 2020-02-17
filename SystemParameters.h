@@ -24,7 +24,7 @@ namespace Pin
     const int ChannelSelectButton   = 15;	// PC1
     const int NeoPixelLedRing       = 16;   // PC2
 
-    #define VERSION1
+    #define VERSION2
 
     #ifdef VERSION1
     const int ChannelLedsLeakage    = 17;   // PC3

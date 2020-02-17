@@ -1,33 +1,15 @@
 //  Copyright © 2019 Paul Langemeijer. All rights reserved.
 #pragma once
 #include "NeoPixelRing.h"
+#include "XicorX9514.h"
 
-class DigitalPotmeter {
+class DigitalPotmeter : public XicorX9514 {
 public:
 	DigitalPotmeter();
 
-    bool isInitialized() const;
-    void setTargetValue(int targetValue);
-    void up();
-    void down();
-    void updateToTargetValue();
 	void disableDisplay();
-    void setAlternateColor(bool on);
+    void onNewValue(int actualValue, int maxSteps) override;
 
 private:
-    void handlePulsingUp();
-    void handlePulsingDown();
-    void startPulsingUp();
-    void startPulsingDown();
-    void setTimeoutPulse();
-
-private:
-    int m_targetValue;
-    int m_actualValue;
-
-    enum State { Idle, PulsingUp, PulsingDown };
-    State m_state;
-    unsigned long m_pulseTimeOut;
-
     NeoPixelRing m_neoPixelRing;
 };

@@ -6,8 +6,7 @@ const int NumberOfLeds = 24;
 const int DefaultBrightness = 10;
 
 NeoPixelRing::NeoPixelRing() :
-    m_LedRing(NumberOfLeds, Pin::NeoPixelLedRing),
-    m_colorTVIsOn(false)
+    m_LedRing(NumberOfLeds, Pin::NeoPixelLedRing)
 {
 }
 
@@ -24,12 +23,6 @@ void NeoPixelRing::setValue(int value, int maxValue)
     uint8_t r_colorPixelsFromLeft = 255;
     uint8_t g_colorPixelsFromLeft = 100;
     uint8_t b_colorPixelsFromLeft = 0;
-
-    if (m_colorTVIsOn) {
-        r_colorPixelsFromLeft = 0;      // green
-        g_colorPixelsFromLeft = 255;
-        b_colorPixelsFromLeft = 0;
-    }
 
     // colorPixelsFromRight: (black)
     uint8_t r_colorPixelsFromRight = 0;
@@ -53,7 +46,3 @@ void NeoPixelRing::disableDisplay()
     m_LedRing.show();
 }
 
-void NeoPixelRing::setAlternateColor(bool on)
-{
-    m_colorTVIsOn = on;
-}

@@ -23,6 +23,7 @@
 #include "InputChannelSelector.h"
 #include "InputChannelSelectButton.h"
 #include "DigitalPotmeter.h"
+#include "DigitalAttenuator.h"
 #include "VolumeRotaryEncoder.h"
 #include "IRCommands.h"
 #include "SystemParameters.h"
@@ -31,16 +32,19 @@
 InputChannelSelector      m_inputChannelSelector;
 InputChannelSelectButton  m_inputChannelSelectButton(m_inputChannelSelector);
 DigitalPotmeter           m_digitalPotmeter;
+DigitalAttenuator         m_digitalAttenuator;
 VolumeRotaryEncoder       m_volumeRotaryEncoder(m_digitalPotmeter);
 IRCommands                m_IRCommands(m_inputChannelSelector, m_digitalPotmeter);
-LightControl              m_lightControl(m_inputChannelSelectButton, m_volumeRotaryEncoder, m_IRCommands, m_digitalPotmeter);
+LightControl              m_lightControl(m_inputChannelSelectButton, m_volumeRotaryEncoder, m_IRCommands, m_digitalPotmeter, m_inputChannelSelector);
 
 bool m_initializing = true;
 
 void enableChannelLedsLeakage()
 {
+#ifdef VERSION1
   pinMode(Pin::ChannelLedsLeakage, OUTPUT);
   digitalWrite(Pin::ChannelLedsLeakage, LOW);
+  #endif
 }
 
 void setup() 
@@ -55,13 +59,15 @@ void EnableOutputs()
   digitalWrite(Pin::EnableOutputs, LOW);
 }
 
-void initializeDigitalPotmeter()
+void initializeDigitalPotmeters()
 {
     m_digitalPotmeter.updateToTargetValue();
+    m_digitalAttenuator.updateToTargetValue();
     if (m_digitalPotmeter.isInitialized())
     {
       m_initializing = false;
       m_digitalPotmeter.setTargetValue(10);
+      m_digitalAttenuator.setTargetValue(31);
       EnableOutputs();
     }
 }
@@ -70,7 +76,7 @@ void loop()
 {
   if (m_initializing)
   {
-    initializeDigitalPotmeter();
+    initializeDigitalPotmeters();
   }
   else
   {
@@ -78,6 +84,7 @@ void loop()
     m_volumeRotaryEncoder.checkRotation();
     m_IRCommands.checkForCommands();
     m_digitalPotmeter.updateToTargetValue();
+    m_digitalAttenuator.updateToTargetValue();
     m_lightControl.checkDisplaySwitchOffNeeded();
   }
 }

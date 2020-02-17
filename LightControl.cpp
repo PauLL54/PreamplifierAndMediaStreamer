@@ -4,6 +4,7 @@
 #include "VolumeRotaryEncoder.h"
 #include "IRCommands.h"
 #include "DigitalPotmeter.h"
+#include "InputChannelSelector.h"
 #include "Arduino.h"
 
 const unsigned long DisplayOnTime =  1L * 60L * 1000L; // ms after some time, switch off the display
@@ -12,11 +13,13 @@ const unsigned long DisplayOnTime =  1L * 60L * 1000L; // ms after some time, sw
 LightControl::LightControl(	InputChannelSelectButton &inputChannelSelectButton,
 				            VolumeRotaryEncoder &volumeRotaryEncoder,
 				            IRCommands &irCommands,
-                            DigitalPotmeter &digitalPotmeter) :
+                            DigitalPotmeter &digitalPotmeter,
+                            InputChannelSelector &inputChannelSelector) :
     m_inputChannelSelectButton(inputChannelSelectButton),
     m_volumeRotaryEncoder(volumeRotaryEncoder),
     m_irCommands(irCommands),
     m_digitalPotmeter(digitalPotmeter),
+    m_inputChannelSelector(inputChannelSelector),
     m_timeout(millis() + DisplayOnTime)
 {
 }
@@ -47,6 +50,7 @@ void LightControl::checkDisplaySwitchOffNeeded()
         //Serial.println("LightControl: switch off needed");
         m_timeout = 0;
         m_digitalPotmeter.disableDisplay();
+        m_inputChannelSelector.disableDisplay();
     }
 }
 

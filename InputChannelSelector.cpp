@@ -3,8 +3,14 @@
 #include "Arduino.h"
 #include "SystemParameters.h"
 
-InputChannelSelector::InputChannelSelector()
+const int DefaultBrightness = 100;
+
+InputChannelSelector::InputChannelSelector() :
+	m_brightness(DefaultBrightness),
+	m_currentChannel(0)
 {
+	pinMode(Pin::BrightnessChannelLEDs, OUTPUT);
+
 	pinMode(Pin::ChannelSelectBit0, OUTPUT);
 	pinMode(Pin::ChannelSelectBit1, OUTPUT);
 	pinMode(Pin::ChannelSelectBit2, OUTPUT);
@@ -44,6 +50,16 @@ void InputChannelSelector::switchToChannel(int channel)
 	digitalWrite(Pin::ChannelSelectBit0, bit0);
 	digitalWrite(Pin::ChannelSelectBit1, bit1);
 	digitalWrite(Pin::ChannelSelectBit2, bit2);
+	setBrightness(m_brightness);
 	Serial.print("switchToChannel: "); Serial.println(channel);
 }
 
+void InputChannelSelector::disableDisplay()
+{
+	setBrightness(0);
+}
+
+void InputChannelSelector::setBrightness(int brightness) // 0..255
+{
+	analogWrite(Pin::BrightnessChannelLEDs, brightness);
+}
