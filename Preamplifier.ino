@@ -44,7 +44,7 @@ void enableChannelLedsLeakage()
 #ifdef VERSION1
   pinMode(Pin::ChannelLedsLeakage, OUTPUT);
   digitalWrite(Pin::ChannelLedsLeakage, LOW);
-  #endif
+#endif
 }
 
 void setup() 
@@ -56,7 +56,12 @@ void setup()
 void EnableOutputs()
 {
   pinMode(Pin::EnableOutputs, OUTPUT);
+#ifdef VERSION1
   digitalWrite(Pin::EnableOutputs, LOW);
+#endif
+#ifdef VERSION2
+  digitalWrite(Pin::EnableOutputs, HIGH);
+#endif
 }
 
 void initializeDigitalPotmeters()
