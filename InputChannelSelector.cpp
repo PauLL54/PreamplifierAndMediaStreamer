@@ -56,7 +56,7 @@ void InputChannelSelector::switchToChannel(int channel)
 
 void InputChannelSelector::disableDisplay()
 {
-	setBrightness(0);
+	setBrightness(255);
 }
 
 void InputChannelSelector::setBrightness(int brightness) // 0..255
