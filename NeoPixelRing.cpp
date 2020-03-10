@@ -6,12 +6,19 @@ const int NumberOfLeds = 24;
 const int DefaultBrightness = 10;
 
 NeoPixelRing::NeoPixelRing() :
-    m_LedRing(NumberOfLeds, Pin::NeoPixelLedRing)
+    m_LedRing(NumberOfLeds, Pin::NeoPixelLedRing),
+    m_lastValue(0),
+    m_lastMaxValue(0)
 {
 }
 
 void NeoPixelRing::setValue(int value, int maxValue)
 {
+    if (m_lastValue == value && m_lastMaxValue == maxValue) return;
+    
+    m_lastValue = value;
+    m_lastMaxValue = maxValue;
+
     m_LedRing.begin();
     m_LedRing.setBrightness(DefaultBrightness);
 
@@ -44,5 +51,10 @@ void NeoPixelRing::disableDisplay()
 {
 	m_LedRing.clear();
     m_LedRing.show();
+}
+
+void NeoPixelRing::enableDisplay()
+{
+    setValue(m_lastValue, m_lastMaxValue);
 }
 

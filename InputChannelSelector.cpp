@@ -51,7 +51,12 @@ void InputChannelSelector::switchToChannel(int channel)
 	digitalWrite(Pin::ChannelSelectBit1, bit1);
 	digitalWrite(Pin::ChannelSelectBit2, bit2);
 	setBrightness(m_brightness);
-	Serial.print("switchToChannel: "); Serial.println(channel);
+	//Serial.print("switchToChannel: "); Serial.println(channel);
+}
+
+void InputChannelSelector::enableDisplay()
+{
+	setBrightness(m_brightness);
 }
 
 void InputChannelSelector::disableDisplay()

@@ -8,6 +8,11 @@ DigitalPotmeter::DigitalPotmeter() :
 {
 }
 
+void DigitalPotmeter::enableDisplay()
+{
+    m_neoPixelRing.enableDisplay();
+}
+
 void DigitalPotmeter::disableDisplay()
 {
     m_neoPixelRing.disableDisplay();

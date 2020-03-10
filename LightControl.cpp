@@ -33,11 +33,11 @@ void LightControl::checkUserActions()
 
 void LightControl::updateTimeout(unsigned long lastTimeUserAction)
 {
-    unsigned long timeout = lastTimeUserAction + DisplayOnTime;
-    if (timeout > millis() && timeout > m_timeout)
+    unsigned long timeToSwitchOffDisplay = lastTimeUserAction + DisplayOnTime;
+    if (millis() < timeToSwitchOffDisplay && timeToSwitchOffDisplay > m_timeout)
     {
         //Serial.println("new timeout set");
-        m_timeout = timeout;
+        m_timeout = timeToSwitchOffDisplay;
     }
 }
 
@@ -45,12 +45,20 @@ void LightControl::checkDisplaySwitchOffNeeded()
 {
     checkUserActions();
 
-    if (m_timeout != 0 && millis() > m_timeout)
+    if (m_timeout != 0)
     {
-        //Serial.println("LightControl: switch off needed");
-        m_timeout = 0;
-        m_digitalPotmeter.disableDisplay();
-        m_inputChannelSelector.disableDisplay();
+        if (millis() > m_timeout)
+        {
+            //Serial.println("LightControl: switch off needed");
+            m_timeout = 0;
+            m_digitalPotmeter.disableDisplay();
+            m_inputChannelSelector.disableDisplay();
+        }
+        else
+        {
+            m_digitalPotmeter.enableDisplay();
+            m_inputChannelSelector.enableDisplay();       
+        }
     }
 }
 

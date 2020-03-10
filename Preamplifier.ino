@@ -19,6 +19,7 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
+#include <Wire.h>
 
 #include "InputChannelSelector.h"
 #include "InputChannelSelectButton.h"
@@ -28,6 +29,7 @@
 #include "IRCommands.h"
 #include "SystemParameters.h"
 #include "LightControl.h"
+#include "I2C.h"
 
 InputChannelSelector      m_inputChannelSelector;
 InputChannelSelectButton  m_inputChannelSelectButton(m_inputChannelSelector);
@@ -36,6 +38,7 @@ DigitalAttenuator         m_digitalAttenuator;
 VolumeRotaryEncoder       m_volumeRotaryEncoder(m_digitalPotmeter);
 IRCommands                m_IRCommands(m_inputChannelSelector, m_digitalPotmeter);
 LightControl              m_lightControl(m_inputChannelSelectButton, m_volumeRotaryEncoder, m_IRCommands, m_digitalPotmeter, m_inputChannelSelector);
+I2C                       m_i2c(m_inputChannelSelector);
 
 bool m_initializing = true;
 

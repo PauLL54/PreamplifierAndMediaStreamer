@@ -10,6 +10,7 @@ public:
 	void selectNextChannel();
 	void selectPreviousChannel();
 	void setBrightness(int brightness);
+	void enableDisplay();
 	void disableDisplay();
 
 private:
