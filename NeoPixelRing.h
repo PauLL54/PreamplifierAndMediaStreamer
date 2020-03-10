@@ -14,4 +14,5 @@ private:
 	Adafruit_NeoPixel m_LedRing;
 	int m_lastValue;
 	int m_lastMaxValue;
+	bool m_enabled;
 };

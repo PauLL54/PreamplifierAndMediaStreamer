@@ -14,8 +14,6 @@ NeoPixelRing::NeoPixelRing() :
 
 void NeoPixelRing::setValue(int value, int maxValue)
 {
-    if (m_lastValue == value && m_lastMaxValue == maxValue) return;
-    
     m_lastValue = value;
     m_lastMaxValue = maxValue;
 
@@ -45,16 +43,19 @@ void NeoPixelRing::setValue(int value, int maxValue)
     }
 
     m_LedRing.show();
+    m_enabled = true;
 }
 
 void NeoPixelRing::disableDisplay()
 {
 	m_LedRing.clear();
     m_LedRing.show();
+    m_enabled = false;
 }
 
 void NeoPixelRing::enableDisplay()
 {
-    setValue(m_lastValue, m_lastMaxValue);
+    if (!m_enabled)
+        setValue(m_lastValue, m_lastMaxValue);
 }
 
