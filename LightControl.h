@@ -30,4 +30,5 @@ private:
 	InputChannelSelector &m_inputChannelSelector;
 
 	unsigned long m_timeout;
+	bool m_displayIsEnabled;
 };

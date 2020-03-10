@@ -20,7 +20,8 @@ LightControl::LightControl(	InputChannelSelectButton &inputChannelSelectButton,
     m_irCommands(irCommands),
     m_digitalPotmeter(digitalPotmeter),
     m_inputChannelSelector(inputChannelSelector),
-    m_timeout(millis() + DisplayOnTime)
+    m_timeout(millis() + DisplayOnTime),
+    m_displayIsEnabled(true)
 {
 }
 
@@ -38,6 +39,7 @@ void LightControl::updateTimeout(unsigned long lastTimeUserAction)
     {
         //Serial.println("new timeout set");
         m_timeout = timeToSwitchOffDisplay;
+        m_displayIsEnabled = true;
     }
 }
 
@@ -45,12 +47,12 @@ void LightControl::checkDisplaySwitchOffNeeded()
 {
     checkUserActions();
 
-    if (m_timeout != 0)
+    if (m_displayIsEnabled)
     {
         if (millis() > m_timeout)
         {
             //Serial.println("LightControl: switch off needed");
-            m_timeout = 0;
+            m_displayIsEnabled = false;
             m_digitalPotmeter.disableDisplay();
             m_inputChannelSelector.disableDisplay();
         }
