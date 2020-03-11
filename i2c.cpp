@@ -2,25 +2,33 @@
 #include "I2C.h"
 #include "InputChannelSelector.h"
 #include "Arduino.h"
-#include "wire.h"
-
-const unsigned long DisplayOnTime =  1L * 60L * 1000L; // ms after some time, switch off the display
-//const unsigned long DisplayOnTime = 3000; // ms for testing
 
 I2C::I2C(InputChannelSelector &inputChannelSelector) :
     m_inputChannelSelector(inputChannelSelector)
 {
-    Wire.begin(4);                // join i2c bus with address #4
-    Wire.onReceive(receiveEvent); // register event
 }
 
-static void I2C::receiveEvent(int howMany)
+void I2C::handleInput(char* input)
 {
-    while(Wire.available() > 1) // loop through all but the last
+    // Split input (e.g.: "=LedBrightness=12345=") into a name and a value:
+    char* command = strtok(input, "="); // command is empty
+    char* name = 0;
+    char* value = 0;
+    if (command != 0)
     {
-        char c = Wire.read();   // receive byte as a character
-        Serial.print(c);        // print the character
+        name = strtok(NULL, "=");
+        Serial.println(name);
     }
-    int x = Wire.read();        // receive byte as an integer
-    Serial.println(x);          // print the integer
+    if (command != 0)
+    {
+        value = strtok(NULL, "=");
+        Serial.println(value);
+    }
+
+    // handle commands:
+    if (strcmp(name, "LedBrightness") == 0)
+    {
+        int v = atoi(value);
+        this->m_inputChannelSelector.setDefaultBrightness(v);
+    }
 }

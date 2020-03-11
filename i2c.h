@@ -7,10 +7,8 @@ class I2C
 {
 public:
 	I2C(InputChannelSelector &inputChannelSelector);
-
-	static void receiveEvent(int howMany);
-
-private:
+	
+	void handleInput(char* input);
 
 private:
 	InputChannelSelector &m_inputChannelSelector;

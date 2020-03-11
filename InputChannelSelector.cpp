@@ -3,7 +3,7 @@
 #include "Arduino.h"
 #include "SystemParameters.h"
 
-const int DefaultBrightness = 100;
+const int DefaultBrightness = 200;
 
 InputChannelSelector::InputChannelSelector() :
 	m_brightness(DefaultBrightness),
@@ -62,6 +62,12 @@ void InputChannelSelector::enableDisplay()
 void InputChannelSelector::disableDisplay()
 {
 	setBrightness(255);
+}
+
+void InputChannelSelector::setDefaultBrightness(int brightness) // 0..255
+{
+	m_brightness = brightness;
+	setBrightness(brightness);
 }
 
 void InputChannelSelector::setBrightness(int brightness) // 0..255

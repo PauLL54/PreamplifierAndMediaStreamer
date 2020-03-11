@@ -20,7 +20,6 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 //  DEALINGS IN THE SOFTWARE.
 #include <Wire.h>
-
 #include "InputChannelSelector.h"
 #include "InputChannelSelectButton.h"
 #include "DigitalPotmeter.h"
@@ -42,18 +41,25 @@ I2C                       m_i2c(m_inputChannelSelector);
 
 bool m_initializing = true;
 
-void enableChannelLedsLeakage()
+#define INPUT_SIZE 30
+void I2C_receiveEvent(int howMany)
 {
-#ifdef VERSION1
-  pinMode(Pin::ChannelLedsLeakage, OUTPUT);
-  digitalWrite(Pin::ChannelLedsLeakage, LOW);
-#endif
+    char input[INPUT_SIZE + 1];
+    byte i = 0;
+    while(Wire.available() > 0)
+    {
+        input[i++] = Wire.read();
+    }
+    input[i] = 0;
+    m_i2c.handleInput(input);
 }
 
 void setup() 
 {
   Serial.begin(9600);
-  enableChannelLedsLeakage();
+
+  Wire.begin(4);                     // join i2c bus with address #4
+  Wire.onReceive(I2C_receiveEvent);  // register event
 }
 
 void EnableOutputs()
