@@ -46,11 +46,12 @@ void I2C_receiveEvent(int howMany)
 {
     char input[INPUT_SIZE + 1];
     byte i = 0;
-    while(Wire.available() > 0)
+    while(Wire.available() > 0 && i < INPUT_SIZE)
     {
         input[i++] = Wire.read();
     }
     input[i] = 0;
+    Serial.println(input);
     m_i2c.handleInput(input);
 }
 
@@ -65,12 +66,7 @@ void setup()
 void EnableOutputs()
 {
   pinMode(Pin::EnableOutputs, OUTPUT);
-#ifdef VERSION1
-  digitalWrite(Pin::EnableOutputs, LOW);
-#endif
-#ifdef VERSION2
   digitalWrite(Pin::EnableOutputs, HIGH);
-#endif
 }
 
 void initializeDigitalPotmeters()
