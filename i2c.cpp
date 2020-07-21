@@ -28,7 +28,14 @@ void I2C::handleInput(char* input)
     // handle commands:
     if (strcmp(name, "LedBrightness") == 0)
     {
+        Serial.println("command found: LedBrightness");
         int v = atoi(value);
         this->m_inputChannelSelector.setDefaultBrightness(v);
+    }
+    if (strcmp(name, "SetChannel") == 0)
+    {
+        Serial.println("command found: SetChannel");
+        int v = atoi(value);
+        this->m_inputChannelSelector.selectChannel(v);
     }
 }
