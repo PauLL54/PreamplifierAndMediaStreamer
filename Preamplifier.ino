@@ -27,8 +27,8 @@
 #include "VolumeRotaryEncoder.h"
 #include "IRCommands.h"
 #include "SystemParameters.h"
+#include "i2c.h"
 #include "LightControl.h"
-#include "I2C.h"
 
 InputChannelSelector m_inputChannelSelector;
 InputChannelSelectButton m_inputChannelSelectButton(m_inputChannelSelector);
@@ -36,8 +36,8 @@ DigitalPotmeter m_digitalPotmeter;
 DigitalAttenuator m_digitalAttenuator;
 VolumeRotaryEncoder m_volumeRotaryEncoder(m_digitalPotmeter);
 IRCommands m_IRCommands(m_inputChannelSelector, m_digitalPotmeter);
-LightControl m_lightControl(m_inputChannelSelectButton, m_volumeRotaryEncoder, m_IRCommands, m_digitalPotmeter, m_inputChannelSelector);
 I2C m_i2c(m_inputChannelSelector);
+LightControl m_lightControl(m_inputChannelSelectButton, m_volumeRotaryEncoder, m_IRCommands, m_digitalPotmeter, m_inputChannelSelector, m_i2c);
 
 bool m_initializing = true;
 

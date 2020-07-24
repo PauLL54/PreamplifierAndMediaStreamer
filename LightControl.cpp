@@ -4,6 +4,7 @@
 #include "VolumeRotaryEncoder.h"
 #include "IRCommands.h"
 #include "DigitalPotmeter.h"
+#include "i2c.h"
 #include "InputChannelSelector.h"
 #include "Arduino.h"
 
@@ -14,12 +15,14 @@ LightControl::LightControl(	InputChannelSelectButton &inputChannelSelectButton,
 				            VolumeRotaryEncoder &volumeRotaryEncoder,
 				            IRCommands &irCommands,
                             DigitalPotmeter &digitalPotmeter,
-                            InputChannelSelector &inputChannelSelector) :
+                            InputChannelSelector &inputChannelSelector,
+                            I2C &i2c) :
     m_inputChannelSelectButton(inputChannelSelectButton),
     m_volumeRotaryEncoder(volumeRotaryEncoder),
     m_irCommands(irCommands),
     m_digitalPotmeter(digitalPotmeter),
     m_inputChannelSelector(inputChannelSelector),
+    m_i2c(i2c),
     m_timeout(millis() + DisplayOnTime),
     m_displayIsEnabled(true)
 {
@@ -30,6 +33,7 @@ void LightControl::checkUserActions()
     updateTimeout(m_inputChannelSelectButton.getLastTimeUserAction());
     updateTimeout(m_volumeRotaryEncoder.getLastTimeUserAction());
     updateTimeout(m_irCommands.getLastTimeUserAction());
+    updateTimeout(m_i2c.getLastTimeUserAction());
 }
 
 void LightControl::updateTimeout(unsigned long lastTimeUserAction)

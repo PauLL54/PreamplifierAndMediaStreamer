@@ -1,6 +1,6 @@
 {
+    "port": "COM10",
     "board": "arduino:avr:atmega328bb",
     "sketch": "Preamplifier.ino",
-    "port": "COM8",
-    "programmer": "Arduino as ISP"
+    "programmer": "ArduinoISP"
 }

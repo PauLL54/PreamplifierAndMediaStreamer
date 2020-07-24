@@ -31,11 +31,18 @@ void I2C::handleInput(char* input)
         Serial.println("command found: LedBrightness");
         int v = atoi(value);
         this->m_inputChannelSelector.setDefaultBrightness(v);
+        m_lastTimeUserAction = millis();
     }
     if (strcmp(name, "SetChannel") == 0)
     {
         Serial.println("command found: SetChannel");
         int v = atoi(value);
         this->m_inputChannelSelector.selectChannel(v);
+        m_lastTimeUserAction = millis();
     }
+}
+
+unsigned long I2C::getLastTimeUserAction() const
+{
+    return m_lastTimeUserAction;
 }

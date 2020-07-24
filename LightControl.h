@@ -6,6 +6,7 @@ class VolumeRotaryEncoder;
 class IRCommands;
 class DigitalPotmeter;
 class InputChannelSelector;
+class I2C;
 
 class LightControl
 {
@@ -14,7 +15,8 @@ public:
 				 VolumeRotaryEncoder &volumeRotaryEncoder,
 				 IRCommands &irCommands,
 				 DigitalPotmeter &digitalPotmeter,
-				 InputChannelSelector &inputChannelSelector);
+				 InputChannelSelector &inputChannelSelector,
+				 I2C &i2c);
 
 	void checkDisplaySwitchOffNeeded();
 
@@ -28,6 +30,7 @@ private:
 	IRCommands &m_irCommands;
 	DigitalPotmeter &m_digitalPotmeter;
 	InputChannelSelector &m_inputChannelSelector;
+	I2C &m_i2c;
 
 	unsigned long m_timeout;
 	bool m_displayIsEnabled;
