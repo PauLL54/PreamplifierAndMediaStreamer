@@ -44,8 +44,6 @@ bool m_initializing = true;
 #define INPUT_SIZE 30
 void I2C_receiveEvent(int howMany)
 {
-  Serial.println(">I2C_receiveEvent");
-
   char input[INPUT_SIZE + 1];
   byte i = 0;
   while (Wire.available() > 0 && i < INPUT_SIZE)
@@ -55,14 +53,11 @@ void I2C_receiveEvent(int howMany)
     i++;
   }
   input[i] = 0;
-  Serial.println(input);
-  Serial.println("<I2C_receiveEvent");
   m_i2c.handleInput(input);
 }
 
 void I2C_requestEvent()
 {
-  Serial.println("I2C_requestEvent");
   Wire.write(12);
 }
 
@@ -72,8 +67,7 @@ void setup()
 
   Wire.begin(4);                    // join i2c bus with address #4
   Wire.onReceive(I2C_receiveEvent); // register event
-  Wire.onRequest(I2C_requestEvent);
-  Serial.println("setup");
+  //Wire.onRequest(I2C_requestEvent);
 }
 
 void EnableOutputs()
