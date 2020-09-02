@@ -4,6 +4,8 @@
 #include "SystemParameters.h"
 
 const int DebounceTime_ms = 1;
+// There exist two kinds of rotaryencoders which use opposite directions. The difference is the length of the knob.
+#define LONGROTARYENCODER 1
 
 VolumeRotaryEncoder::VolumeRotaryEncoder(DigitalPotmeter& digitalPotmeter) :
     m_digitalPotmeter(digitalPotmeter),
@@ -29,13 +31,17 @@ void VolumeRotaryEncoder::checkRotation()
         // We do that by reading pin B.      
         if (digitalRead(Pin::VolumeEncoderB) != valuePinA) 
         {  
-            // Means pin A Changed first - We're Rotating Clockwise        
-            m_digitalPotmeter.up();
+            if (LONGROTARYENCODER)
+                m_digitalPotmeter.down();
+            else
+                m_digitalPotmeter.up();
         }
         else 
         {
-            // Otherwise B changed first and we're moving CCW        
-            m_digitalPotmeter.down();
+            if (LONGROTARYENCODER)
+                m_digitalPotmeter.up();
+            else
+                m_digitalPotmeter.down();
         } 
         m_pinALast = valuePinA;
         
