@@ -1,10 +1,12 @@
 //  Copyright © 2019 Paul Langemeijer. All rights reserved.
 #include "I2C.h"
 #include "InputChannelSelector.h"
+#include "DigitalPotmeter.h"
 #include "Arduino.h"
 
-I2C::I2C(InputChannelSelector &inputChannelSelector) :
-    m_inputChannelSelector(inputChannelSelector)
+I2C::I2C(InputChannelSelector &inputChannelSelector, DigitalPotmeter &digitalPotmeter) :
+    m_inputChannelSelector(inputChannelSelector),
+    m_digitalPotmeter(digitalPotmeter)
 {
 }
 
@@ -28,16 +30,29 @@ void I2C::handleInput(char* input)
     // handle commands:
     if (strcmp(name, "LedBrightness") == 0)
     {
-        Serial.println("command found: LedBrightness");
         int v = atoi(value);
         this->m_inputChannelSelector.setDefaultBrightness(v);
         m_lastTimeUserAction = millis();
     }
     if (strcmp(name, "SetChannel") == 0)
     {
-        Serial.println("command found: SetChannel");
         int v = atoi(value);
         this->m_inputChannelSelector.selectChannel(v);
+        m_lastTimeUserAction = millis();
+    }
+    if (strcmp(name, "SetVolume") == 0)
+    {
+        if (strcmp(value, "off") == 0)
+            this->m_digitalPotmeter.setTargetValue(0);
+        else if (strcmp(value, "down") == 0)
+            this->m_digitalPotmeter.down();
+        else if (strcmp(value, "up") == 0)
+            this->m_digitalPotmeter.up();
+        else {
+            int v = atoi(value);
+            this->m_digitalPotmeter.setTargetValue(v);
+        }
+
         m_lastTimeUserAction = millis();
     }
 }

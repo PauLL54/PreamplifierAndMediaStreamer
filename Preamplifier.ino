@@ -36,7 +36,7 @@ DigitalPotmeter m_digitalPotmeter;
 DigitalAttenuator m_digitalAttenuator;
 VolumeRotaryEncoder m_volumeRotaryEncoder(m_digitalPotmeter);
 IRCommands m_IRCommands(m_inputChannelSelector, m_digitalPotmeter);
-I2C m_i2c(m_inputChannelSelector);
+I2C m_i2c(m_inputChannelSelector, m_digitalPotmeter);
 LightControl m_lightControl(m_inputChannelSelectButton, m_volumeRotaryEncoder, m_IRCommands, m_digitalPotmeter, m_inputChannelSelector, m_i2c);
 
 bool m_initializing = true;
