@@ -9,7 +9,7 @@ public:
 
 	void enableDisplay();
 	void disableDisplay();
-    void onNewValue(int actualValue, int maxSteps) override;
+    void onNewValue(int8_t actualValue, int8_t maxSteps) override;
 
 private:
     NeoPixelRing m_neoPixelRing;

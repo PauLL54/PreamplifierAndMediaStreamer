@@ -3,17 +3,19 @@
 #include "Arduino.h"
 #include "SystemParameters.h"
 
-const int MaxDebounceTime_ms = 60;  // XICOR X9514 digital potentiometer
-const int MaxSteps = 31;            // XICOR X9514 digital potentiometer
+const int8_t MaxDebounceTime_ms = 60;  // XICOR X9514 digital potentiometer
+const int8_t MaxSteps = 31;            // XICOR X9514 digital potentiometer
 
-XicorX9514::XicorX9514(int pinUp, int pinDown) :
+XicorX9514::XicorX9514(int8_t pinUp, int8_t pinDown) :
     m_pinUp(pinUp),
     m_pinDown(pinDown),
-    m_targetValue(0),
+    m_channel(6),
     m_actualValue(MaxSteps + 1),
     m_state(Idle),
     m_pulseTimeOut(0)
 {
+    m_targetValue[m_channel] = 0,
+
    	pinMode(m_pinUp,   OUTPUT);
     pinMode(m_pinDown, OUTPUT);
 
@@ -26,23 +28,34 @@ bool XicorX9514::isInitialized() const
     return (m_actualValue == 0);
 }
 
-void XicorX9514::setTargetValue(int targetValue)
+void XicorX9514::setTargetValue(int8_t targetValue)
 {
-    m_targetValue = targetValue;
+    m_targetValue[m_channel] = targetValue;
+}
+
+void XicorX9514::setTargetValue(int8_t channel, int8_t targetValue)
+{
+    m_targetValue[channel] = targetValue;
+}
+
+void XicorX9514::setChannel(int8_t channel)
+{
+            Serial.println(channel);
+    m_channel = channel;
 }
 
 void XicorX9514::up()
 {
-    m_targetValue++;
-    if (m_targetValue > MaxSteps)
-        m_targetValue = MaxSteps;
+    m_targetValue[m_channel]++;
+    if (m_targetValue[m_channel] > MaxSteps)
+        m_targetValue[m_channel] = MaxSteps;
 }
 
 void XicorX9514::down()
 {
-    m_targetValue--;
-    if (m_targetValue < 0)
-        m_targetValue = 0;
+    m_targetValue[m_channel]--;
+    if (m_targetValue[m_channel] < 0)
+        m_targetValue[m_channel] = 0;
 }
 
 void XicorX9514::updateToTargetValue()
@@ -61,11 +74,11 @@ void XicorX9514::updateToTargetValue()
 
     if (m_state == Idle)
     {
-        if (m_targetValue > m_actualValue)
+        if (m_targetValue[m_channel] > m_actualValue)
         {
             startPulsingUp();
         }
-        if (m_targetValue < m_actualValue)
+        if (m_targetValue[m_channel] < m_actualValue)
         {
             startPulsingDown();
         }
@@ -119,7 +132,7 @@ void XicorX9514::handlePulsingDown()
     }
 }
 
-void XicorX9514::onNewValue(int actualValue, int maxSteps)
+void XicorX9514::onNewValue(int8_t actualValue, int8_t maxSteps)
 {
     actualValue;
     maxSteps;

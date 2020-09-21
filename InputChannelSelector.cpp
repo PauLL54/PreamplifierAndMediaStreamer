@@ -5,7 +5,8 @@
 
 const int DefaultBrightness = 200;
 
-InputChannelSelector::InputChannelSelector() :
+InputChannelSelector::InputChannelSelector(DigitalPotmeter& digitalPotmeter) :
+	m_digitalPotmeter(digitalPotmeter),
 	m_brightness(DefaultBrightness),
 	m_currentChannel(0)
 {
@@ -14,8 +15,6 @@ InputChannelSelector::InputChannelSelector() :
 	pinMode(Pin::ChannelSelectBit0, OUTPUT);
 	pinMode(Pin::ChannelSelectBit1, OUTPUT);
 	pinMode(Pin::ChannelSelectBit2, OUTPUT);
-
-	selectChannel(6); // music server
 }
 
 void InputChannelSelector::selectChannel(int channel)
@@ -51,7 +50,8 @@ void InputChannelSelector::switchToChannel(int channel)
 	digitalWrite(Pin::ChannelSelectBit1, bit1);
 	digitalWrite(Pin::ChannelSelectBit2, bit2);
 	setBrightness(m_brightness);
-	//Serial.print("switchToChannel: "); Serial.println(channel);
+  Serial.print("switchToChannel: "); Serial.println(channel);
+  m_digitalPotmeter.setChannel(channel);
 }
 
 void InputChannelSelector::enableDisplay()

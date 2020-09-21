@@ -18,7 +18,7 @@ void DigitalPotmeter::disableDisplay()
     m_neoPixelRing.disableDisplay();
 }
 
-void DigitalPotmeter::onNewValue(int actualValue, int maxSteps)
+void DigitalPotmeter::onNewValue(int8_t actualValue, int8_t maxSteps)
 {
     m_neoPixelRing.setValue(actualValue, maxSteps);
 }
