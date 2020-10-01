@@ -7,6 +7,7 @@ class DigitalPotmeter : public XicorX9514 {
 public:
 	DigitalPotmeter();
 
+	void initChannelValues();
 	void enableDisplay();
 	void disableDisplay();
     void onNewValue(int8_t actualValue, int8_t maxSteps) override;

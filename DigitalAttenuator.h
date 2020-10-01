@@ -5,4 +5,6 @@
 class DigitalAttenuator : public XicorX9514 {
 public:
 	DigitalAttenuator();
+
+	void initChannelValues();
 };

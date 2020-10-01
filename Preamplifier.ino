@@ -29,14 +29,16 @@
 #include "SystemParameters.h"
 #include "i2c.h"
 #include "LightControl.h"
+#include "OutputChannelSelector.h"
 
 DigitalPotmeter m_digitalPotmeter;
 DigitalAttenuator m_digitalAttenuator;
 InputChannelSelector m_inputChannelSelector(m_digitalPotmeter);
+OutputChannelSelector m_outputChannelSelector(m_digitalAttenuator);
 InputChannelSelectButton m_inputChannelSelectButton(m_inputChannelSelector);
 VolumeRotaryEncoder m_volumeRotaryEncoder(m_digitalPotmeter);
 IRCommands m_IRCommands(m_inputChannelSelector, m_digitalPotmeter);
-I2C m_i2c(m_inputChannelSelector, m_digitalPotmeter);
+I2C m_i2c(m_inputChannelSelector, m_digitalPotmeter, m_digitalAttenuator, m_outputChannelSelector);
 LightControl m_lightControl(m_inputChannelSelectButton, m_volumeRotaryEncoder, m_IRCommands, m_digitalPotmeter, m_inputChannelSelector, m_i2c);
 
 bool m_initializing = true;
@@ -70,24 +72,6 @@ void setup()
   //Wire.onRequest(I2C_requestEvent);
 }
 
-void enableOutputs()
-{
-  pinMode(Pin::EnableOutputs, OUTPUT);
-  digitalWrite(Pin::EnableOutputs, HIGH);
-}
-
-void setTargetValues()
-{
-    for (int i = 0; i < 8; ++i)
-    {
-      m_digitalPotmeter.setTargetValue(i, 10);
-      m_digitalAttenuator.setTargetValue(i, 31);
-    }
-    // select music server
-    m_inputChannelSelector.selectChannel(6); 
-    m_digitalPotmeter.setTargetValue(6, 20);
-}
-
 void initializeDigitalPotmeters()
 {
   m_digitalPotmeter.updateToTargetValue();
@@ -95,8 +79,12 @@ void initializeDigitalPotmeters()
   if (m_digitalPotmeter.isInitialized())
   {
     m_initializing = false;
-    setTargetValues();
-    enableOutputs();
+    m_digitalAttenuator.initChannelValues();
+    m_digitalPotmeter.initChannelValues();
+
+    m_inputChannelSelector.selectChannel(6);  // 0..7
+    m_outputChannelSelector.selectChannel(0);  // 0..1
+    m_outputChannelSelector.enableOutputs();
   }
 }
 

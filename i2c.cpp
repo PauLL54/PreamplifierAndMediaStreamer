@@ -1,12 +1,18 @@
 //  Copyright © 2019 Paul Langemeijer. All rights reserved.
 #include "I2C.h"
 #include "InputChannelSelector.h"
+#include "OutputChannelSelector.h"
 #include "DigitalPotmeter.h"
+#include "DigitalAttenuator.h"
 #include "Arduino.h"
+#include <EEPROM.h>
+#include "SystemParameters.h"
 
-I2C::I2C(InputChannelSelector &inputChannelSelector, DigitalPotmeter &digitalPotmeter) :
+I2C::I2C(InputChannelSelector &inputChannelSelector, DigitalPotmeter &digitalPotmeter, DigitalAttenuator &digitalAttenuator, OutputChannelSelector &outputChannelSelector) :
     m_inputChannelSelector(inputChannelSelector),
-    m_digitalPotmeter(digitalPotmeter)
+    m_digitalPotmeter(digitalPotmeter),
+    m_digitalAttenuator(digitalAttenuator),
+    m_outputChannelSelector(outputChannelSelector)
 {
 }
 
@@ -53,6 +59,48 @@ void I2C::handleInput(char* input)
             this->m_digitalPotmeter.setTargetValue(v);
         }
 
+        m_lastTimeUserAction = millis();
+    }
+    if (strcmp(name, "SCV") == 0)   // SetChannelVolume
+    {
+        char* args = strtok(value, ","); 
+        char* s = 0;
+        int8_t channelVolume;
+        for (int i = 0; i < 8; ++i)
+        {
+            if (args != 0)
+            {
+                s = strtok(NULL, ",");
+                channelVolume = atoi(s);
+                Serial.println(channelVolume);
+                EEPROM.put(Eeprom::ChannelVolumes + i, channelVolume);
+            }
+            this->m_digitalPotmeter.initChannelValues();
+        }
+        m_lastTimeUserAction = millis();
+    }
+    if (strcmp(name, "OUTPUT") == 0)   // select output channel 0 or 1
+    {
+        int v = atoi(value);
+        this->m_outputChannelSelector.selectChannel(v);
+        m_lastTimeUserAction = millis();
+    }
+    if (strcmp(name, "SOV") == 0)   // SetOutputVolume
+    {
+        char* args = strtok(value, ","); 
+        for (int i = 0; i < 2; ++i)
+        {
+            char* s = 0;
+            int8_t channelVolume;
+            if (args != 0)
+            {
+                s = strtok(NULL, ",");
+                channelVolume = atoi(s);
+                Serial.println(channelVolume);
+                EEPROM.put(Eeprom::OutputVolumes + i, channelVolume);
+            }
+            this->m_digitalAttenuator.initChannelValues();
+        }
         m_lastTimeUserAction = millis();
     }
 }
