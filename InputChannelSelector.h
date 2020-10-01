@@ -7,6 +7,7 @@ class InputChannelSelector {
 public:
 	InputChannelSelector(DigitalPotmeter& digitalPotmeter);
 
+    int8_t getChannel();
 	void selectChannel(int channel); // 0..7
 	void selectNextChannel();
 	void selectPreviousChannel();

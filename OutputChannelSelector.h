@@ -9,6 +9,7 @@ public:
 	OutputChannelSelector(DigitalAttenuator &digitalAttenuator);
 
 	void selectChannel(int8_t channel); // 0..1
+    int8_t getChannel();
 	void enableOutputs();
 
 private:

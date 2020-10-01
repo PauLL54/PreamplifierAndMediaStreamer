@@ -17,6 +17,11 @@ InputChannelSelector::InputChannelSelector(DigitalPotmeter& digitalPotmeter) :
 	pinMode(Pin::ChannelSelectBit2, OUTPUT);
 }
 
+int8_t InputChannelSelector::getChannel()
+{
+	return m_digitalPotmeter.getChannel();
+}
+
 void InputChannelSelector::selectChannel(int channel)
 {
 	m_currentChannel = channel;

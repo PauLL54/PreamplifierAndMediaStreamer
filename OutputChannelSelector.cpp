@@ -9,11 +9,16 @@ OutputChannelSelector::OutputChannelSelector(DigitalAttenuator &digitalAttenuato
 {
 }
 
+int8_t OutputChannelSelector::getChannel()
+{
+	return m_digitalAttenuator.getChannel();
+}
+
 void OutputChannelSelector::selectChannel(int8_t channel) // 0..1
 {
-  int v = channel == 0 ? HIGH : LOW;
+  	int v = channel == 0 ? HIGH : LOW;
 	digitalWrite(Pin::EnableOutputA_notB, v);
-  m_digitalAttenuator.setChannel(channel);
+  	m_digitalAttenuator.setChannel(channel);
 }
 
 void OutputChannelSelector::enableOutputs()

@@ -60,7 +60,9 @@ void I2C_receiveEvent(int howMany)
 
 void I2C_requestEvent()
 {
-  Wire.write(12);
+  char outputChannel[30];
+  sprintf(outputChannel, "I=%d;O=%d;",m_inputChannelSelector.getChannel(),  m_outputChannelSelector.getChannel());
+  Wire.write(outputChannel);
 }
 
 void setup()
@@ -69,7 +71,7 @@ void setup()
 
   Wire.begin(4);                    // join i2c bus with address #4
   Wire.onReceive(I2C_receiveEvent); // register event
-  //Wire.onRequest(I2C_requestEvent);
+  Wire.onRequest(I2C_requestEvent);
 }
 
 void initializeDigitalPotmeters()

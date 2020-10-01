@@ -63,19 +63,35 @@ void I2C::handleInput(char* input)
     }
     if (strcmp(name, "SCV") == 0)   // SetChannelVolume
     {
-        char* args = strtok(value, ","); 
-        char* s = 0;
+        char* arg = strtok(value, ","); 
         int8_t channelVolume;
         for (int i = 0; i < 8; ++i)
         {
-            if (args != 0)
+            if (arg != 0)
             {
-                s = strtok(NULL, ",");
-                channelVolume = atoi(s);
+                channelVolume = atoi(arg);
                 Serial.println(channelVolume);
                 EEPROM.put(Eeprom::ChannelVolumes + i, channelVolume);
+                arg = strtok(NULL, ",");
             }
             this->m_digitalPotmeter.initChannelValues();
+        }
+        m_lastTimeUserAction = millis();
+    }
+    if (strcmp(name, "SOV") == 0)   // SetOutputVolume
+    {
+        char* arg = strtok(value, ","); 
+        int8_t channelVolume;
+        for (int i = 0; i < 2; ++i)
+        {
+            if (arg != 0)
+            {
+                channelVolume = atoi(arg);
+                Serial.println(channelVolume);
+                EEPROM.put(Eeprom::OutputVolumes + i, channelVolume);
+                arg = strtok(NULL, ",");
+            }
+            this->m_digitalAttenuator.initChannelValues();
         }
         m_lastTimeUserAction = millis();
     }
@@ -83,24 +99,6 @@ void I2C::handleInput(char* input)
     {
         int v = atoi(value);
         this->m_outputChannelSelector.selectChannel(v);
-        m_lastTimeUserAction = millis();
-    }
-    if (strcmp(name, "SOV") == 0)   // SetOutputVolume
-    {
-        char* args = strtok(value, ","); 
-        for (int i = 0; i < 2; ++i)
-        {
-            char* s = 0;
-            int8_t channelVolume;
-            if (args != 0)
-            {
-                s = strtok(NULL, ",");
-                channelVolume = atoi(s);
-                Serial.println(channelVolume);
-                EEPROM.put(Eeprom::OutputVolumes + i, channelVolume);
-            }
-            this->m_digitalAttenuator.initChannelValues();
-        }
         m_lastTimeUserAction = millis();
     }
 }

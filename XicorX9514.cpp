@@ -40,8 +40,12 @@ void XicorX9514::setTargetValue(int8_t channel, int8_t targetValue)
 
 void XicorX9514::setChannel(int8_t channel)
 {
-            Serial.println(channel);
     m_channel = channel;
+}
+
+int8_t XicorX9514::getChannel()
+{
+    return m_channel;
 }
 
 void XicorX9514::up()
