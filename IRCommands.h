@@ -11,13 +11,13 @@ class IRCommands {
 public:
 	IRCommands(InputChannelSelector& inputChannelSelector, DigitalPotmeter& digitalPotmeter);
 
-	void initEnabledForChannel();
-	int8_t getEnabledForChannel() const;
+	void initVolumeEnabledForChannel();
+	int8_t getVolumeEnabledForChannel() const;
 	void checkForCommands();
 	unsigned long getLastTimeUserAction() const;
 
 private:
-	bool enabledForChannel();
+	bool volumeEnabledForChannel();
 	Protocol::Command getProtocolCommand();
 	void handleProtocolCommand(Protocol::Command command);
 
@@ -39,5 +39,5 @@ private:
 		{ SONY, new Protocol_Sony() },
 		{ RC5,  new Protocol_RC5()  }
 	};
-    int8_t m_enabledForChannel[8];
+    int8_t m_volumeEnabledForChannel[8];
 };

@@ -83,8 +83,8 @@ void I2C::handleInput(char* input)
     if (strcmp(name, "IREFC") == 0)   // Infra Red EnabledForChannel
     {
         int8_t v = atoi(value);
-        EEPROM.put(Eeprom::IREnabledForChannel, v);
-        this->m_irCommands.initEnabledForChannel();
+        EEPROM.put(Eeprom::IRVolumeForChannel, v);
+        this->m_irCommands.initVolumeEnabledForChannel();
     }
     if (strcmp(name, "SOV") == 0)   // SetOutputVolume
     {

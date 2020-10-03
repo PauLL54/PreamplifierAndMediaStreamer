@@ -15,33 +15,33 @@ IRCommands::IRCommands(InputChannelSelector& inputChannelSelector, DigitalPotmet
 
     m_IRReceiver.enableIRIn(); // Start the receiver
 
-    initEnabledForChannel();
+    initVolumeEnabledForChannel();
 }
 
-void IRCommands::initEnabledForChannel()
+void IRCommands::initVolumeEnabledForChannel()
 {
-    int8_t enabledForChannel;
-    EEPROM.get(Eeprom::IREnabledForChannel, enabledForChannel);
+    int8_t volumeEnabledForChannel;
+    EEPROM.get(Eeprom::IRVolumeForChannel, volumeEnabledForChannel);
 
     for (int8_t i = 0; i < 8; ++i) {
-        m_enabledForChannel[i] = enabledForChannel & (1 << i) ? true : false;
+        m_volumeEnabledForChannel[i] = volumeEnabledForChannel & (1 << i) ? true : false;
     }
 }
 
-int8_t IRCommands::getEnabledForChannel() const
+int8_t IRCommands::getVolumeEnabledForChannel() const
 {
     int8_t result = 0;
     for (int8_t i = 0; i < 8; ++i) {
-        if (m_enabledForChannel[i]) {
+        if (m_volumeEnabledForChannel[i]) {
             result |= 1 << i;
         }
     }
     return result;
 }
 
-bool IRCommands::enabledForChannel()
+bool IRCommands::volumeEnabledForChannel()
 {
-    return m_enabledForChannel[m_inputChannelSelector.getChannel()];
+    return m_volumeEnabledForChannel[m_inputChannelSelector.getChannel()];
 }
 
 void IRCommands::checkForCommands()
@@ -71,7 +71,7 @@ Protocol::Command IRCommands::getProtocolCommand()
 
 void IRCommands::handleProtocolCommand(Protocol::Command command)
 {
-    bool volumeEnabled = enabledForChannel();
+    bool volumeEnabled = volumeEnabledForChannel();
 
     switch (command)
     {

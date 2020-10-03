@@ -64,7 +64,7 @@ void I2C_requestEvent()
   sprintf(outputChannel, "I=%d;O=%d;R=%d;", 
     m_inputChannelSelector.getChannel(),  
     m_outputChannelSelector.getChannel(),
-    m_IRCommands.getEnabledForChannel());
+    m_IRCommands.getVolumeEnabledForChannel());
   Wire.write(outputChannel);
 }
 
