@@ -2,8 +2,8 @@
 #include "NeoPixelRing.h"
 #include "SystemParameters.h"
 
-const int NumberOfLeds = 24;
-const int DefaultBrightness = 10;
+const int8_t NumberOfLeds = 24;
+const int8_t DefaultBrightness = 10;
 
 NeoPixelRing::NeoPixelRing() :
     m_LedRing(NumberOfLeds, Pin::NeoPixelLedRing),
@@ -12,7 +12,7 @@ NeoPixelRing::NeoPixelRing() :
 {
 }
 
-void NeoPixelRing::setValue(int value, int maxValue)
+void NeoPixelRing::setValue(int8_t value, int8_t maxValue)
 {
     m_lastValue = value;
     m_lastMaxValue = maxValue;

@@ -12,7 +12,7 @@ public:
 
 private:
 	DigitalPotmeter& m_digitalPotmeter;
-	int m_pinALast;
+	int8_t m_pinALast;
 	Debouncer m_debouncer;
     unsigned long m_lastTimeUserAction;
 };

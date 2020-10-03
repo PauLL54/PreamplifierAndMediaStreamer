@@ -1,6 +1,7 @@
 //  Copyright © 2019 Paul Langemeijer. All rights reserved.
 #include "IRCommands.h"
 #include "SystemParameters.h"
+#include <EEPROM.h>
 
 IRCommands::IRCommands(InputChannelSelector& inputChannelSelector, DigitalPotmeter& digitalPotmeter) :
     m_inputChannelSelector(inputChannelSelector),
@@ -13,6 +14,34 @@ IRCommands::IRCommands(InputChannelSelector& inputChannelSelector, DigitalPotmet
     pinMode(Pin::NecOnly, INPUT_PULLUP);
 
     m_IRReceiver.enableIRIn(); // Start the receiver
+
+    initEnabledForChannel();
+}
+
+void IRCommands::initEnabledForChannel()
+{
+    int8_t enabledForChannel;
+    EEPROM.get(Eeprom::IREnabledForChannel, enabledForChannel);
+
+    for (int8_t i = 0; i < 8; ++i) {
+        m_enabledForChannel[i] = enabledForChannel & (1 << i) ? true : false;
+    }
+}
+
+int8_t IRCommands::getEnabledForChannel() const
+{
+    int8_t result = 0;
+    for (int8_t i = 0; i < 8; ++i) {
+        if (m_enabledForChannel[i]) {
+            result |= 1 << i;
+        }
+    }
+    return result;
+}
+
+bool IRCommands::enabledForChannel()
+{
+    return m_enabledForChannel[m_inputChannelSelector.getChannel()];
 }
 
 void IRCommands::checkForCommands()
@@ -42,15 +71,17 @@ Protocol::Command IRCommands::getProtocolCommand()
 
 void IRCommands::handleProtocolCommand(Protocol::Command command)
 {
+    bool volumeEnabled = enabledForChannel();
+
     switch (command)
     {
         case Protocol::NoCommand:
             break;
         case Protocol::VolumeUp:
-            m_digitalPotmeter.up();
+            if (volumeEnabled) m_digitalPotmeter.up();
             break;
         case Protocol::VolumeDown:
-            m_digitalPotmeter.down();
+            if (volumeEnabled) m_digitalPotmeter.down();
             break;
         case Protocol::ChannelUp:
         case Protocol::ChannelUp2:

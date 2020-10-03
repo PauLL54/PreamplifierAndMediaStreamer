@@ -6,13 +6,13 @@ class NeoPixelRing {
 public:
 	NeoPixelRing();
 
-	void setValue(int value, int maxValue);
+	void setValue(int8_t value, int8_t maxValue);
 	void enableDisplay();
 	void disableDisplay();
 
 private:
 	Adafruit_NeoPixel m_LedRing;
-	int m_lastValue;
-	int m_lastMaxValue;
+	int8_t m_lastValue;
+	int8_t m_lastMaxValue;
 	bool m_enabled;
 };

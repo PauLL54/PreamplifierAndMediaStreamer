@@ -38,7 +38,7 @@ OutputChannelSelector m_outputChannelSelector(m_digitalAttenuator);
 InputChannelSelectButton m_inputChannelSelectButton(m_inputChannelSelector);
 VolumeRotaryEncoder m_volumeRotaryEncoder(m_digitalPotmeter);
 IRCommands m_IRCommands(m_inputChannelSelector, m_digitalPotmeter);
-I2C m_i2c(m_inputChannelSelector, m_digitalPotmeter, m_digitalAttenuator, m_outputChannelSelector);
+I2C m_i2c(m_inputChannelSelector, m_digitalPotmeter, m_digitalAttenuator, m_outputChannelSelector, m_IRCommands);
 LightControl m_lightControl(m_inputChannelSelectButton, m_volumeRotaryEncoder, m_IRCommands, m_digitalPotmeter, m_inputChannelSelector, m_i2c);
 
 bool m_initializing = true;
@@ -60,8 +60,11 @@ void I2C_receiveEvent(int howMany)
 
 void I2C_requestEvent()
 {
-  char outputChannel[30];
-  sprintf(outputChannel, "I=%d;O=%d;",m_inputChannelSelector.getChannel(),  m_outputChannelSelector.getChannel());
+  char outputChannel[32];
+  sprintf(outputChannel, "I=%d;O=%d;R=%d;", 
+    m_inputChannelSelector.getChannel(),  
+    m_outputChannelSelector.getChannel(),
+    m_IRCommands.getEnabledForChannel());
   Wire.write(outputChannel);
 }
 

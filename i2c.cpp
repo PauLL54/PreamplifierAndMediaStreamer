@@ -4,15 +4,18 @@
 #include "OutputChannelSelector.h"
 #include "DigitalPotmeter.h"
 #include "DigitalAttenuator.h"
+#include "IRCommands.h"
 #include "Arduino.h"
 #include <EEPROM.h>
 #include "SystemParameters.h"
 
-I2C::I2C(InputChannelSelector &inputChannelSelector, DigitalPotmeter &digitalPotmeter, DigitalAttenuator &digitalAttenuator, OutputChannelSelector &outputChannelSelector) :
+I2C::I2C(InputChannelSelector &inputChannelSelector, DigitalPotmeter &digitalPotmeter, DigitalAttenuator &digitalAttenuator,
+ OutputChannelSelector &outputChannelSelector, IRCommands &irCommands) :
     m_inputChannelSelector(inputChannelSelector),
     m_digitalPotmeter(digitalPotmeter),
     m_digitalAttenuator(digitalAttenuator),
-    m_outputChannelSelector(outputChannelSelector)
+    m_outputChannelSelector(outputChannelSelector),
+    m_irCommands(irCommands)
 {
 }
 
@@ -58,7 +61,6 @@ void I2C::handleInput(char* input)
             int v = atoi(value);
             this->m_digitalPotmeter.setTargetValue(v);
         }
-
         m_lastTimeUserAction = millis();
     }
     if (strcmp(name, "SCV") == 0)   // SetChannelVolume
@@ -70,13 +72,19 @@ void I2C::handleInput(char* input)
             if (arg != 0)
             {
                 channelVolume = atoi(arg);
-                Serial.println(channelVolume);
+                //Serial.println(channelVolume);
                 EEPROM.put(Eeprom::ChannelVolumes + i, channelVolume);
                 arg = strtok(NULL, ",");
             }
-            this->m_digitalPotmeter.initChannelValues();
         }
+        this->m_digitalPotmeter.initChannelValues();
         m_lastTimeUserAction = millis();
+    }
+    if (strcmp(name, "IREFC") == 0)   // Infra Red EnabledForChannel
+    {
+        int8_t v = atoi(value);
+        EEPROM.put(Eeprom::IREnabledForChannel, v);
+        this->m_irCommands.initEnabledForChannel();
     }
     if (strcmp(name, "SOV") == 0)   // SetOutputVolume
     {
@@ -91,9 +99,8 @@ void I2C::handleInput(char* input)
                 EEPROM.put(Eeprom::OutputVolumes + i, channelVolume);
                 arg = strtok(NULL, ",");
             }
-            this->m_digitalAttenuator.initChannelValues();
         }
-        m_lastTimeUserAction = millis();
+        this->m_digitalAttenuator.initChannelValues();
     }
     if (strcmp(name, "OUTPUT") == 0)   // select output channel 0 or 1
     {

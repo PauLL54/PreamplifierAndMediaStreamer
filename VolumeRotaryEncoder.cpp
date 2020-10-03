@@ -3,7 +3,7 @@
 #include <Arduino.h>
 #include "SystemParameters.h"
 
-const int DebounceTime_ms = 1;
+const int8_t DebounceTime_ms = 1;
 // There exist two kinds of rotaryencoders which use opposite directions. The difference is the length of the knob.
 #define LONGROTARYENCODER 1
 
@@ -21,7 +21,7 @@ VolumeRotaryEncoder::VolumeRotaryEncoder(DigitalPotmeter& digitalPotmeter) :
 
 void VolumeRotaryEncoder::checkRotation()
 {
-    int valuePinA = digitalRead(Pin::VolumeEncoderA);
+    int8_t valuePinA = digitalRead(Pin::VolumeEncoderA);
     m_debouncer.updateInputState(valuePinA);
 
     if (m_debouncer.inputChanged())

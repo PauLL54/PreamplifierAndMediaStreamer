@@ -22,7 +22,7 @@ int8_t InputChannelSelector::getChannel()
 	return m_digitalPotmeter.getChannel();
 }
 
-void InputChannelSelector::selectChannel(int channel)
+void InputChannelSelector::selectChannel(int8_t channel)
 {
 	m_currentChannel = channel;
 	switchToChannel(m_currentChannel);
@@ -46,16 +46,16 @@ void InputChannelSelector::selectPreviousChannel()
 	switchToChannel(m_currentChannel);
 }
 
-void InputChannelSelector::switchToChannel(int channel)
+void InputChannelSelector::switchToChannel(int8_t channel)
 {
-	int bit0 = channel & 1 ? HIGH : LOW;
-	int bit1 = channel & 2 ? HIGH : LOW;
-	int bit2 = channel & 4 ? HIGH : LOW;
+	int8_t bit0 = channel & 1 ? HIGH : LOW;
+	int8_t bit1 = channel & 2 ? HIGH : LOW;
+	int8_t bit2 = channel & 4 ? HIGH : LOW;
 	digitalWrite(Pin::ChannelSelectBit0, bit0);
 	digitalWrite(Pin::ChannelSelectBit1, bit1);
 	digitalWrite(Pin::ChannelSelectBit2, bit2);
 	setBrightness(m_brightness);
-  Serial.print("switchToChannel: "); Serial.println(channel);
+  //Serial.print("switchToChannel: "); Serial.println(channel);
   m_digitalPotmeter.setChannel(channel);
 }
 
@@ -69,13 +69,13 @@ void InputChannelSelector::disableDisplay()
 	setBrightness(255);
 }
 
-void InputChannelSelector::setDefaultBrightness(int brightness) // 0..255
+void InputChannelSelector::setDefaultBrightness(int8_t brightness) // 0..255
 {
 	m_brightness = brightness;
 	setBrightness(brightness);
 }
 
-void InputChannelSelector::setBrightness(int brightness) // 0..255
+void InputChannelSelector::setBrightness(int8_t brightness) // 0..255
 {
 	analogWrite(Pin::BrightnessChannelLEDs, brightness);
 }

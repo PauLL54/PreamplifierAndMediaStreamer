@@ -3,9 +3,10 @@
 
 namespace Eeprom
 {
-    const int8_t ChannelVolumes         =  0;    // 8 bytes: volume (0..31) per input channel
-    const int8_t OutputVolumes          =  8;    // 2 bytes: volume (0..31) per output channel
-    const int8_t EncoderLongAxis        = 10;    // 1 byte: 1 if volume encoder with long axis is used else 0
+    const int8_t ChannelVolumes         =  0;   // 8 bytes: volume (0..31) per input channel
+    const int8_t OutputVolumes          =  8;   // 2 bytes: volume (0..31) per output channel
+    const int8_t IREnabledForChannel    = 10;   // 1 byte: Each bit determines if IR commands can be used for a channel
+    const int8_t EncoderLongAxis        = 11;   // 1 byte: 1 if volume encoder with long axis is used else 0
 }
 
 namespace Pin
