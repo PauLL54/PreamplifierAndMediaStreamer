@@ -8,11 +8,8 @@ IRCommands::IRCommands(InputChannelSelector& inputChannelSelector, DigitalPotmet
     m_digitalPotmeter(digitalPotmeter),
     m_IRReceiver(Pin::IRReceiver),
     m_IRDecoder(),
-    m_lastTimeUserAction(0),
-    m_useNecOnly(false)
+    m_lastTimeUserAction(0)
 {
-    pinMode(Pin::NecOnly, INPUT_PULLUP);
-
     m_IRReceiver.enableIRIn(); // Start the receiver
 
     initVolumeEnabledForChannel();
@@ -46,7 +43,6 @@ bool IRCommands::volumeEnabledForChannel()
 
 void IRCommands::checkForCommands()
 {
-    checkJumpers();
     handleProtocolCommand(getProtocolCommand());
 }
 
@@ -125,9 +121,6 @@ void IRCommands::handleProtocolCommand(Protocol::Command command)
 
 Protocol *IRCommands::getProtocol(uint8_t protocolType)
 {
-    if (m_useNecOnly && (protocolType != NEC))
-        return nullptr;
-
     for (uint32_t i = 0; i < sizeof(m_protocolData) / sizeof(ProtocolData); ++i) 
     {
         if (m_protocolData[i].protocolType == protocolType)
@@ -139,11 +132,6 @@ Protocol *IRCommands::getProtocol(uint8_t protocolType)
     //Serial.print("getProtocol(): protocolType not found: "); 
     //Serial.println(protocolType);
     return nullptr;
-}
-
-void IRCommands::checkJumpers()
-{
-    m_useNecOnly = digitalRead(Pin::NecOnly);
 }
 
 unsigned long IRCommands::getLastTimeUserAction() const

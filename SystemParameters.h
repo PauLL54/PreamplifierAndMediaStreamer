@@ -17,7 +17,7 @@ namespace Pin
     const int8_t AttenuatorUp          =  3;    // PD3
     const int8_t AttenuatorDown        =  4;    // PD4
     const int8_t BrightnessChannelLEDs =  5;    // PD5 PWM 980 Hz
-    const int8_t NecOnly               =  6;    // PD6
+    const int8_t RotaryEncoderType     =  6;    // PD6 There are two different types: with long and short axis. The direction is different.
     const int8_t DigitalPotmeterUp     =  7;    // PD7
 
     const int8_t DigitalPotmeterDown   =  8;    // PB0
