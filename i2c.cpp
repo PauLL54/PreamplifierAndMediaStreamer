@@ -106,7 +106,6 @@ void I2C::handleInput(char* input)
     {
         int v = atoi(value);
         this->m_outputChannelSelector.selectChannel(v);
-        m_lastTimeUserAction = millis();
     }
 }
 
