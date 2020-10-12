@@ -1,0 +1,60 @@
+[UsbDisk]
+comment=Raspberry Pi Media Share
+path=/media/usbdisk/Music
+browseable=Yes
+writeable=Yes
+only guest=no
+create mask=0777
+directory mask=0777
+public=yes
+
+[UsbDisk2]
+comment=Raspberry Pi Media Share
+path=/media/usbdisk2/Music
+browseable=Yes
+writeable=Yes
+only guest=no
+create mask=0777
+directory mask=0777
+public=yes
+
+[RoomCorrection]
+ comment=Room correction files
+ path=/media/internaldisk/roomcorrection
+ browseable=Yes
+ writeable=Yes
+ only guest=no
+ create mask=0777
+ directory mask=0777
+ public=yes
+
+[opt]
+ comment=opt
+ path=/opt
+ browseable=Yes
+ writeable=Yes
+ only guest=no
+ create mask=0777
+ directory mask=0777
+ public=yes
+
+[NodeRed]
+ comment=NodeRed
+ path=/home/pi/.node-red
+ browseable=Yes
+ writeable=Yes
+ only guest=no
+ create mask=0777
+ directory mask=0777
+ public=yes
+
+[SqueezeboxPref]
+ comment=SqueezeboxPref
+ path=/var/lib/squeezeboxserver/prefs
+ browseable=Yes
+ writeable=Yes
+ only guest=no
+ create mask=0777
+ directory mask=0777
+ public=yes
+

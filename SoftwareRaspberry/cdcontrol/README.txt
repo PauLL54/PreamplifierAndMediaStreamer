@@ -11,6 +11,7 @@ It supports the following features:
 * Speed control - On regular basis the speed is set to the lowest value
 * Auto start - When the software detects that a CD is inserted it will starts playing.
 * log file: /var/log/cdcontrol.log
+* Precondition: 'setcd' has been installed.
 
 The package must be copied to the directory: /opt/cdcontrol 
 It will run as system deamon.

@@ -1,5 +1,7 @@
 #!/bin/bash -v
 
+# precondition: 'setcd' and 'abcde' have been installed
+
 sudo mkdir /opt/cdcontrol
 sudo cp cdcontrol.py /opt/cdcontrol/.
 sudo cp startcd.py /opt/cdcontrol/.
