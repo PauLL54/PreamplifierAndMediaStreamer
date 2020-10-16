@@ -1,6 +1,6 @@
 //  Copyright © 2019 Paul Langemeijer. All rights reserved.
 #pragma once
-#include "IRLibAll.h"
+#include "IRLib2.h"
 #include "DigitalPotmeter.h"
 #include "InputChannelSelector.h"
 #include "Protocol_NEC.h"
