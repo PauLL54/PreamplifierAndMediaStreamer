@@ -55,8 +55,8 @@ void InputChannelSelector::switchToChannel(int8_t channel)
 	digitalWrite(Pin::ChannelSelectBit1, bit1);
 	digitalWrite(Pin::ChannelSelectBit2, bit2);
 	setBrightness(m_brightness);
-  //Serial.print("switchToChannel: "); Serial.println(channel);
-  m_digitalPotmeter.setChannel(channel);
+    //Serial.print("switchToChannel: "); Serial.println(channel);
+    m_digitalPotmeter.setChannel(channel);
 }
 
 void InputChannelSelector::enableDisplay()
