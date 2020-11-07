@@ -67,4 +67,3 @@ void LightControl::checkDisplaySwitchOffNeeded()
         }
     }
 }
-

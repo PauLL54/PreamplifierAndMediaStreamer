@@ -58,4 +58,3 @@ void NeoPixelRing::enableDisplay()
     if (!m_enabled)
         setValue(m_lastValue, m_lastMaxValue);
 }
-

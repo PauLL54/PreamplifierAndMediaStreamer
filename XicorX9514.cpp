@@ -43,9 +43,14 @@ void XicorX9514::setChannel(int8_t channel)
     m_channel = channel;
 }
 
-int8_t XicorX9514::getChannel()
+int8_t XicorX9514::getChannel() const
 {
     return m_channel;
+}
+
+int8_t XicorX9514::getTargetValue() const
+{
+    return m_targetValue[m_channel];
 }
 
 void XicorX9514::up()

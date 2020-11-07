@@ -39,4 +39,3 @@ Protocol::Command Protocol_RC5::getCommand(uint32_t code)
 
     return command;
 }
-

@@ -10,7 +10,8 @@ public:
     void setTargetValue(int8_t targetValue); // 0..31
     void setTargetValue(int8_t channel, int8_t targetValue); // 0..7, 0..31
     void setChannel(int8_t channel); // 0..7
-    int8_t getChannel();
+    int8_t getChannel() const;
+    int8_t getTargetValue() const;
     void up();
     void down();
     void updateToTargetValue();

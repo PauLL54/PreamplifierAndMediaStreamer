@@ -33,4 +33,3 @@ Protocol::Command Protocol_Sony::getCommand(uint32_t code)
 
     return command;
 }
-
