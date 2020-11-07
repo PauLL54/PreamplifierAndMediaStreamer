@@ -62,7 +62,8 @@ void I2C_requestEvent()
 {
   // send input channel (0..7), output channel (0..1), volume enabled for channel (1 byte: 0..1 per channel), volume (0..31)
   char outputChannel[32];
-  sprintf(outputChannel, "I=%d;O=%d;R=%d;V=%d", 
+  for (int8_t i = 0; i < 32; ++i) outputChannel[i] = 0;
+  sprintf(outputChannel, "I=%d;O=%d;R=%d;V=%d;", 
     m_inputChannelSelector.getChannel(),  
     m_outputChannelSelector.getChannel(),
     m_IRCommands.getVolumeEnabledForChannel(),
