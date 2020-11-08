@@ -1,14 +1,19 @@
 //  Copyright © 2019 Paul Langemeijer. All rights reserved.
 #include "InputChannelSelector.h"
+#include "OutputChannelSelector.h"
 #include "Arduino.h"
 #include "SystemParameters.h"
+#include "DigitalPotmeter.h"
 
-const int DefaultBrightness = 200;
+const int    MuteTime_ms = 2000;		// mute time when Bluetooth channel is selected
+const int8_t DefaultBrightness = 200;
 
-InputChannelSelector::InputChannelSelector(DigitalPotmeter& digitalPotmeter) :
+InputChannelSelector::InputChannelSelector(DigitalPotmeter& digitalPotmeter, OutputChannelSelector& outputChannelSelector) :
 	m_digitalPotmeter(digitalPotmeter),
+	m_outputChannelSelector(outputChannelSelector),
 	m_brightness(DefaultBrightness),
-	m_currentChannel(0)
+	m_currentChannel(0),
+	m_muteTimeOut(0)
 {
 	pinMode(Pin::BrightnessChannelLEDs, OUTPUT);
 
@@ -48,6 +53,12 @@ void InputChannelSelector::selectPreviousChannel()
 
 void InputChannelSelector::switchToChannel(int8_t channel)
 {
+	if (channel == 7) { 
+		// Bluetooth: disable output for a short moment to prevent clicks
+		m_outputChannelSelector.disableOutputs();
+		m_muteTimeOut = millis() + MuteTime_ms;
+	}
+
 	int8_t bit0 = channel & 1 ? HIGH : LOW;
 	int8_t bit1 = channel & 2 ? HIGH : LOW;
 	int8_t bit2 = channel & 4 ? HIGH : LOW;
@@ -57,6 +68,16 @@ void InputChannelSelector::switchToChannel(int8_t channel)
 	setBrightness(m_brightness);
     //Serial.print("switchToChannel: "); Serial.println(channel);
     m_digitalPotmeter.setChannel(channel);
+}
+
+void InputChannelSelector::checkMuted()
+{
+	if (m_muteTimeOut != 0) {
+		if (millis() > m_muteTimeOut) {
+			m_muteTimeOut = 0;
+			m_outputChannelSelector.enableOutputs();
+		}
+	}
 }
 
 void InputChannelSelector::enableDisplay()

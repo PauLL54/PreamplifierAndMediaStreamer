@@ -33,8 +33,8 @@
 
 DigitalPotmeter m_digitalPotmeter;
 DigitalAttenuator m_digitalAttenuator;
-InputChannelSelector m_inputChannelSelector(m_digitalPotmeter);
 OutputChannelSelector m_outputChannelSelector(m_digitalAttenuator);
+InputChannelSelector m_inputChannelSelector(m_digitalPotmeter, m_outputChannelSelector);
 InputChannelSelectButton m_inputChannelSelectButton(m_inputChannelSelector);
 VolumeRotaryEncoder m_volumeRotaryEncoder(m_digitalPotmeter);
 IRCommands m_IRCommands(m_inputChannelSelector, m_digitalPotmeter);
@@ -110,5 +110,6 @@ void loop()
     m_digitalPotmeter.updateToTargetValue();
     m_digitalAttenuator.updateToTargetValue();
     m_lightControl.checkDisplaySwitchOffNeeded();
+    m_inputChannelSelector.checkMuted();
   }
 }
