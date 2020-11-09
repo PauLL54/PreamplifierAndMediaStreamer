@@ -54,20 +54,21 @@ void I2C_receiveEvent(int howMany)
     input[i] = c;
     i++;
   }
-  input[i] = 0;
+  input[i] = (char)0;
+  //Serial.println(input);
   m_i2c.handleInput(input);
 }
 
 void I2C_requestEvent()
 {
-  // send input channel (0..7), output channel (0..1), volume enabled for channel (1 byte: 0..1 per channel), volume (0..31)
-  char buf[32];
-  for (int8_t i = 0; i < 32; ++i) buf[i] = 0;
-  sprintf(buf, "I=%d;O=%d;R=%d;V=%d;", 
+  // send input channel (0..7), output channel (0..1), volume enabled for channel (byte: 0..255, each bit determines state of a channel), volume (0..31)
+  char buf[20];
+  sprintf(buf, "I=%d;O=%d;R=%3d;V=%2d;\0", 
     m_inputChannelSelector.getChannel(),  
     m_outputChannelSelector.getChannel(),
     m_IRCommands.getVolumeEnabledForChannel(),
     m_digitalPotmeter.getTargetValue());
+    //Serial.println(buf);
     Wire.write(buf);
 }
 

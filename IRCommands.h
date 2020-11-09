@@ -12,7 +12,7 @@ public:
 	IRCommands(InputChannelSelector& inputChannelSelector, DigitalPotmeter& digitalPotmeter);
 
 	void initVolumeEnabledForChannel();
-	int8_t getVolumeEnabledForChannel() const;
+	uint8_t getVolumeEnabledForChannel() const;
 	void checkForCommands();
 	unsigned long getLastTimeUserAction() const;
 

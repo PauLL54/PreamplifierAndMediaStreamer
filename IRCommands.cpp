@@ -26,7 +26,7 @@ void IRCommands::initVolumeEnabledForChannel()
     }
 }
 
-int8_t IRCommands::getVolumeEnabledForChannel() const
+uint8_t IRCommands::getVolumeEnabledForChannel() const
 {
     int8_t result = 0;
     for (int8_t i = 0; i < 8; ++i) {

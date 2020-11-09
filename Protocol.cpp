@@ -27,7 +27,7 @@ Protocol::Command Protocol::getCommand(uint32_t code)
             break;
         }
     }
-    Serial.print(code, HEX); Serial.print("; command="); Serial.println(command);
+    //Serial.print(code, HEX); Serial.print("; command="); Serial.println(command);
 
     return command;
 }

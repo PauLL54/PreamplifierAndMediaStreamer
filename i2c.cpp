@@ -28,12 +28,12 @@ void I2C::handleInput(char* input)
     if (command != 0)
     {
         name = strtok(NULL, "=");
-        Serial.println(name);
+        //Serial.println(name);
     }
     if (command != 0)
     {
         value = strtok(NULL, "=");
-        Serial.println(value);
+        //Serial.println(value);
     }
 
     // handle commands:
@@ -95,7 +95,7 @@ void I2C::handleInput(char* input)
             if (arg != 0)
             {
                 channelVolume = atoi(arg);
-                Serial.println(channelVolume);
+                //Serial.println(channelVolume);
                 EEPROM.put(Eeprom::OutputVolumes + i, channelVolume);
                 arg = strtok(NULL, ",");
             }
